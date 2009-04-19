@@ -1,5 +1,5 @@
 .DS_Store
 config/database.yml
-log/*
+log/*.log
 tmp/*
 db/development_structure.sql
