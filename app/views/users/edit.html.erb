@@ -3,7 +3,8 @@
 <% form_for @user, :url => account_path do |f| %>
   <%= f.error_messages %>
   <%= render :partial => "form", :object => f %>
-  <%= f.submit "Update" %>
+  <button type="submit" class="button positive">
+    <img src="/stylesheets/blueprint/plugins/buttons/icons/tick.png" alt=""/> Update
+  </button>
 <% end %>
  
-<br /><%= link_to "My Profile", account_path %>

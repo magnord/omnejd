@@ -3,5 +3,7 @@
 <% form_for @user, :url => account_path do |f| %>
   <%= f.error_messages %>
   <%= render :partial => "form", :object => f %>
-  <%= f.submit "Register" %>
+  <button type="submit" class="button positive">
+    <img src="/stylesheets/blueprint/plugins/buttons/icons/tick.png" alt=""/> Register
+  </button>
 <% end %>
