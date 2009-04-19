@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  has_many :posts
   
   acts_as_authentic do |c|
     # for available options see documentation in: Authlogic::ActsAsAuthentic
