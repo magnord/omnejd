@@ -6,6 +6,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users
     
   map.resource :user_session
+  map.resource :password_reset
   
   map.root :controller => "user_sessions", :action => "new" # optional, this just sets the root route
 
