@@ -34,3 +34,16 @@ class AreaTest < ActiveSupport::TestCase
   end
 
 end
+# == Schema Information
+# Schema version: 20090419181824
+#
+# Table name: areas
+#
+#  id         :integer         not null, primary key
+#  name       :string(255)
+#  user_id    :integer
+#  created_at :timestamp
+#  updated_at :timestamp
+#  geom       :geometry        not null, polygon, -1
+#
+
