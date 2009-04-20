@@ -3,12 +3,7 @@ require "test_helper"
 class AreaTest < ActiveSupport::TestCase 
   context "An Area instance with bbox (0 0,5 5)" do
     setup do
-      @area = Factory(:area, :geom => Polygon.from_points([[
-        Point.from_x_y(0,0),
-        Point.from_x_y(0,5),
-        Point.from_x_y(5,5),
-        Point.from_x_y(5,0),
-        Point.from_x_y(0,0)]]))
+      @area = Factory(:area, :geom => Polygon.from_coordinates([[[0,0],[0,5],[5,5],[5,0],[0,0]]]))
       @area_name = @area.name
     end
 
