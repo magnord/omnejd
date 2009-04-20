@@ -1,10 +1,15 @@
 require "test_helper"
 
 class AreaTest < ActiveSupport::TestCase 
-  context "An Area instance" do
+  context "An Area instance with bbox (0 0,5 5)" do
     setup do
-      @area = Factory(:area)
-      @area_name = Factory.attributes_for(:area)[:name] # In case creation fails
+      @area = Factory(:area, :geom => Polygon.from_points([[
+        Point.from_x_y(0,0),
+        Point.from_x_y(0,5),
+        Point.from_x_y(5,5),
+        Point.from_x_y(5,0),
+        Point.from_x_y(0,0)]]))
+      @area_name = @area.name
     end
 
     should "find the area" do
@@ -13,14 +18,14 @@ class AreaTest < ActiveSupport::TestCase
       assert_equal area.name, @area_name
     end
 
-    should "find the area in a bounding box" do
+    should "find the area in a bbox (-1 -1,6 6)" do
       assert_not_nil Area.find_by_geom([[-1,-1],[6,6]])
     end
 
-    context "and posts" do
+    context "and posts on (1 1) and (7 7)" do
       setup do
-        @post_in = Factory(:post_in)
-        @post_out = Factory(:post_out)
+        @post_in = Factory(:post, :pos => Point.from_x_y(1,1))
+        @post_out = Factory(:post, :pos => Point.from_x_y(7,7))
       end
 
       should "post_in be inside the area, post_out should not" do
@@ -34,16 +39,3 @@ class AreaTest < ActiveSupport::TestCase
   end
 
 end
-# == Schema Information
-# Schema version: 20090419181824
-#
-# Table name: areas
-#
-#  id         :integer         not null, primary key
-#  name       :string(255)
-#  user_id    :integer
-#  created_at :timestamp
-#  updated_at :timestamp
-#  geom       :geometry        not null, polygon, -1
-#
-
