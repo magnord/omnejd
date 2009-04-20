@@ -1,9 +1,3 @@
-class Post < ActiveRecord::Base
-  belongs_to :user
-  
-  acts_as_geom :pos
-end
-
 # == Schema Information
 # Schema version: 20090419181824
 #
@@ -17,4 +11,10 @@ end
 #  updated_at :timestamp
 #  pos        :geometry        not null, point, -1
 #
+
+class Post < ActiveRecord::Base
+  belongs_to :user
+  
+  acts_as_geom :pos
+end
 
