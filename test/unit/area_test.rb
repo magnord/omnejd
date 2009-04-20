@@ -14,12 +14,12 @@ class AreaTest < ActiveSupport::TestCase
 
     should "find the area" do
       area = Area.find_by_name(@area_name)
-      assert_not_nil area
-      assert_equal area.name, @area_name
+      area.should_not be nil
+      area.name.should == @area_name
     end
 
     should "find the area in a bbox (-1 -1,6 6)" do
-      assert_not_nil Area.find_by_geom([[-1,-1],[6,6]])
+      Area.find_by_geom([[-1,-1],[6,6]]).should_not be nil
     end
 
     context "and posts on (1 1) and (7 7)" do
@@ -30,10 +30,10 @@ class AreaTest < ActiveSupport::TestCase
 
       should "post_in be inside the area, post_out should not" do
         posts = @area.find_contained_posts 
-        assert_not_nil posts
-        assert posts.length > 0
-        posts.first.title = @post_in.title
-        assert_does_not_contain posts, @post_out
+        posts.should_not be nil
+        posts.length.should > 0
+        posts.first.title.should == @post_in.title
+        posts.should exclude @post_out
       end
     end
   end

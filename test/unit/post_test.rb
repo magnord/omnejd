@@ -13,13 +13,13 @@ class PostTest < ActiveSupport::TestCase
 
     should "find the post" do
       @post = Post.find_by_title(@title)
-      assert_equal @post.title, @title
+      @post.title.should == @title
     end
 
     should "find the author of the post" do
       author = @post.user
-      assert_not_nil author
-      assert_equal author.login, @user.login # This is not a particularly good test...
+      author.should_not be(nil)
+      author.login.should == @user.login
     end
   end
 end

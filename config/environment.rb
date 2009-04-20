@@ -22,6 +22,7 @@ Rails::Initializer.run do |config|
   config.gem "authlogic"
   config.gem "thoughtbot-shoulda", :lib => "shoulda", :source => "http://gems.github.com"
   config.gem "thoughtbot-factory_girl", :lib => "factory_girl", :source => "http://gems.github.com"
+  config.gem "jeremymcanally-matchy", :lib => "matchy", :source => "http://gems.github.com"
   config.gem "GeoRuby", :lib => "geo_ruby"
   config.gem "nofxx-postgis_adapter", :lib => "postgis_adapter", :source => "http://gems.github.com"
   
