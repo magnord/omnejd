@@ -1,7 +1,7 @@
 require 'faker'
 
 Sham.login { |n| "user#{n}" }
-Sham.name { |n| Faker::Lorem.words(n) }
+Sham.name { |n| Faker::Lorem.words(1).to_s + "#{n}" }
 Sham.email { Faker::Internet.email }
 Sham.title { Faker::Lorem.sentence }
 Sham.body  { Faker::Lorem.paragraph }
