@@ -28,9 +28,9 @@ config.action_mailer.delivery_method = :test
 # config.active_record.schema_format = :sql
 
 # This is what we need to round Shoulda under RSpec
-config.gem "rspec", :lib => false, :version => ">= 1.2.0" 
-config.gem "rspec-rails", :lib => false, :version => ">= 1.2.0"
-config.gem 'thoughtbot-shoulda', :lib => false, :source => 'http://gems.github.com'
+config.gem "rspec" , :lib => false #, :version => ">= 1.2.0" 
+config.gem "rspec-rails" , :lib => false #, :version => ">= 1.2.0"
+#config.gem 'thoughtbot-shoulda', :lib => false, :source => 'http://gems.github.com'
 
 # Extra stuff
 #config.gem "thoughtbot-factory_girl", :lib => "factory_girl", :source => "http://gems.github.com"
