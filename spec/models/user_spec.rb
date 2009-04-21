@@ -1,12 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe Post do
+describe User do
   before(:each) do
-    @post = Post.make
-    @id = @post.id
+    @user = User.make
+    @id = @user.id
   end
 
   it "should create a new instance given valid attributes" do
-    @post = Post.find(@id)
+    User.find(@id).should == @user
   end
 end
