@@ -8,6 +8,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :user_session
   map.resource :password_reset
   
+  map.resource :areas
+  map.find 'areas/find', :controller => 'areas', :action=>"find"
+  
+  
   map.root :controller => "user_sessions", :action => "new" # optional, this just sets the root route
 
   # Install the default routes as the lowest priority.
