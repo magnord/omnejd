@@ -36,3 +36,5 @@ config.gem 'thoughtbot-shoulda', :lib => false, :source => 'http://gems.github.c
 #config.gem "thoughtbot-factory_girl", :lib => "factory_girl", :source => "http://gems.github.com"
 config.gem "jeremymcanally-matchy", :lib => "matchy", :source => "http://gems.github.com"
 config.gem "notahat-machinist", :lib => 'machinist', :source => "http://gems.github.com"
+config.gem 'faker'
+

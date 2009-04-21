@@ -2,6 +2,7 @@
 # from the project root directory.
 ENV["RAILS_ENV"] ||= 'test'
 require File.dirname(__FILE__) + "/../config/environment" unless defined?(RAILS_ROOT)
+require File.expand_path(File.dirname(__FILE__) + "/blueprints") # For Machinist
 require 'spec/autorun'
 require 'spec/rails'
 require 'shoulda'
@@ -13,6 +14,8 @@ Spec::Runner.configure do |config|
   config.use_transactional_fixtures = true
   config.use_instantiated_fixtures  = false
   config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
+  
+  config.before(:each) { Sham.reset } # For Machinist
 
   # == Fixtures
   #
