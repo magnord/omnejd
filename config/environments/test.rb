@@ -31,3 +31,4 @@ config.gem "thoughtbot-shoulda", :lib => "shoulda", :source => "http://gems.gith
 config.gem "thoughtbot-factory_girl", :lib => "factory_girl", :source => "http://gems.github.com"
 config.gem "jeremymcanally-matchy", :lib => "matchy", :source => "http://gems.github.com"
 config.gem "redgreen"
+config.gem "notahat-machinist", :lib => 'machinist', :source => "http://gems.github.com"
