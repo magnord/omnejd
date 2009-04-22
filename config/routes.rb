@@ -8,7 +8,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :user_session
   map.resource :password_reset
   
-  map.resource :areas
+  map.resources :posts
+  
+  map.resources :areas
   map.find 'areas/find', :controller => 'areas', :action=>"find"
   
   
