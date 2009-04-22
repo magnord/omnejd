@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090419181824) do
+ActiveRecord::Schema.define(:version => 20090422211716) do
 
   create_table "areas", :force => true do |t|
     t.column "name", :string
@@ -21,6 +21,20 @@ ActiveRecord::Schema.define(:version => 20090419181824) do
 
   add_index "areas", ["geom"], :name => "index_areas_on_geom", :spatial=> true 
 
+  create_table "areas_users", :id => false, :force => true do |t|
+    t.column "area_id", :integer
+    t.column "user_id", :integer
+  end
+
+  create_table "bas99nmn", :force => true do |t|
+    t.column "AREA", :float
+    t.column "PERIMETER", :float
+    t.column "BAS990_ID", :float
+    t.column "BASKOD99", :integer
+    t.column "BASNAMN", :string, :limit => 80
+    t.column "geom", :polygon
+  end
+
   create_table "posts", :force => true do |t|
     t.column "title", :string
     t.column "body", :text
@@ -28,6 +42,16 @@ ActiveRecord::Schema.define(:version => 20090419181824) do
     t.column "created_at", :timestamp
     t.column "updated_at", :timestamp
     t.column "pos", :point, :null => false
+  end
+
+  create_table "sweden5", :force => true do |t|
+    t.column "gid", :string, :limit => 20
+    t.column "name", :string, :limit => 50
+    t.column "name_ascii", :string, :limit => 50
+    t.column "geom", :multi_polygon
+  end
+
+  create_table "sweden_5_digit_postcode_areas", :force => true do |t|
   end
 
   create_table "users", :force => true do |t|
