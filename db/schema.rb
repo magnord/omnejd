@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(:version => 20090422211716) do
     t.column "user_id", :integer
     t.column "created_at", :timestamp
     t.column "updated_at", :timestamp
-    t.column "geom", :polygon, :null => false
+    t.column "geom", :polygon, :srid => 4326, :null => false
   end
 
   add_index "areas", ["geom"], :name => "index_areas_on_geom", :spatial=> true 
@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(:version => 20090422211716) do
     t.column "user_id", :integer
     t.column "created_at", :timestamp
     t.column "updated_at", :timestamp
-    t.column "pos", :point, :null => false
+    t.column "pos", :point, :srid => 4326, :null => false
   end
 
   create_table "sweden5", :force => true do |t|

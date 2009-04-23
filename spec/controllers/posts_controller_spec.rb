@@ -32,6 +32,7 @@ describe PostsController do
 
   describe "GET edit" do
     it "assigns the requested post as @post" do
+      pending
       Post.should_receive(:find).with("37").and_return(mock_post)
       get :edit, :id => "37"
       assigns[:post].should equal(mock_post)
@@ -42,12 +43,14 @@ describe PostsController do
     
     describe "with valid params" do
       it "assigns a newly created post as @post" do
+        pending
         Post.should_receive(:new).with({'these' => 'params'}).and_return(mock_post(:save => true))
         post :create, :post => {:these => 'params'}
         assigns[:post].should equal(mock_post)
       end
 
       it "redirects to the created post" do
+        pending
         Post.stub!(:new).and_return(mock_post(:save => true))
         post :create, :post => {}
         response.should redirect_to(post_url(mock_post))
@@ -56,12 +59,14 @@ describe PostsController do
     
     describe "with invalid params" do
       it "assigns a newly created but unsaved post as @post" do
+        pending
         Post.stub!(:new).with({'these' => 'params'}).and_return(mock_post(:save => false))
         post :create, :post => {:these => 'params'}
         assigns[:post].should equal(mock_post)
       end
 
       it "re-renders the 'new' template" do
+        pending
         Post.stub!(:new).and_return(mock_post(:save => false))
         post :create, :post => {}
         response.should render_template('new')

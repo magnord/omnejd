@@ -1,3 +1,4 @@
+<div class="span-16">
 <p>
   <b>Title:</b>
   <%=h @post.title %>
@@ -11,3 +12,5 @@
 
 <%= link_to 'Edit', edit_post_path(@post) %> |
 <%= link_to 'Back', posts_path %>
+</div>
+<%= render :partial => "map" %>

@@ -2,7 +2,7 @@ class CreateAreas < ActiveRecord::Migration
   
   def self.up
     create_table :areas do |t|
-      t.string :name
+      t.string :name, :null => false
       t.references :user
       t.polygon :geom, :null => false
       
