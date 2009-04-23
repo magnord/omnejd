@@ -26,15 +26,6 @@ ActiveRecord::Schema.define(:version => 20090422211716) do
     t.column "user_id", :integer
   end
 
-  create_table "bas99nmn", :force => true do |t|
-    t.column "AREA", :float
-    t.column "PERIMETER", :float
-    t.column "BAS990_ID", :float
-    t.column "BASKOD99", :integer
-    t.column "BASNAMN", :string, :limit => 80
-    t.column "geom", :polygon
-  end
-
   create_table "posts", :force => true do |t|
     t.column "title", :string
     t.column "body", :text
@@ -49,9 +40,6 @@ ActiveRecord::Schema.define(:version => 20090422211716) do
     t.column "name", :string, :limit => 50
     t.column "name_ascii", :string, :limit => 50
     t.column "geom", :multi_polygon
-  end
-
-  create_table "sweden_5_digit_postcode_areas", :force => true do |t|
   end
 
   create_table "users", :force => true do |t|

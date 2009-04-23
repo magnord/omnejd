@@ -29,12 +29,11 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :areas
 
   # Add a test area to all users (when running in development)
-  #after_create :create_test_area, :if => Proc.new { ENV['RAILS_ENV'] == "development" }
+  after_save :add_test_area
 
-  #def create_test_area
-  #  areas << Area.test_area 
-  #  save  
-  #end
+  def add_test_area
+    if ENV['RAILS_ENV'] == "development" then areas << Area.test_area end
+  end
 
   acts_as_authentic do |c|
     # for available options see documentation in: Authlogic::ActsAsAuthentic

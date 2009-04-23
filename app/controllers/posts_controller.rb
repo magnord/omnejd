@@ -2,6 +2,7 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.xml
   def index
+    @page_title = "Posts"
     @posts = Post.all
 
     respond_to do |format|
