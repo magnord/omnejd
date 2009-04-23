@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :areas
 
   # Add a test area to all users (when running in development)
-  after_save :add_test_area
+  after_create :add_test_area
 
   def add_test_area
     if ENV['RAILS_ENV'] == "development" then areas << Area.test_area end

@@ -3,7 +3,10 @@ class PostsController < ApplicationController
   # GET /posts.xml
   def index
     @page_title = "Posts"
+    @user = current_user
     @posts = Post.all
+    init_map
+    outline_area
 
     respond_to do |format|
       format.html # index.html.erb
@@ -82,5 +85,29 @@ class PostsController < ApplicationController
       format.html { redirect_to(posts_url) }
       format.xml  { head :ok }
     end
+  end
+  
+  private
+  def init_map
+    @map = GMap.new("map_div")
+    @map.control_init(:small_map => true, :map_type => true)
+  end
+  
+  def outline_area
+     if @user and @user.areas.length > 0 then
+        @area = @user.areas.first
+        polygon = @area.geom
+        envelope = polygon.envelope
+        area_outline = GPolygon.from_georuby(polygon,"#000000",2,0.8,"#ff5555",0.2)
+        puts area_outline
+        center = GLatLng.from_georuby(envelope.center)
+        zoom = @map.get_bounds_zoom_level(GLatLngBounds.from_georuby(envelope))     
+      else
+        center = [58.9, 11.93]
+        zoom = 8
+      end
+    @map.clear_overlays
+    @map.center_zoom_init(center,zoom)
+    @map.add_overlay(area_outline) if area_outline
   end
 end

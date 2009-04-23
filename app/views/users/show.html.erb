@@ -39,6 +39,11 @@
   <b>Current login ip:</b>
   <%=h @user.current_login_ip %>
 </p>
+
+<p>
+  <b>Watched area:</b>
+  <%=h @user.areas.first.name if @user.areas.length > 0 %>
+</p>
  
  
 <%= link_to 'Edit', edit_account_path %>

@@ -21,7 +21,7 @@ class Area < ActiveRecord::Base
   def self.test_area
     area = Area.find_by_name("Testarea")
     if area.nil? then
-     return Area.create(:name => "Testarea", :geom => Sweden5.find(11).geom.first) unless Area.find_by_name("Testarea")
+     return Area.create(:name => "Testarea", :geom => Sweden5.find(20).geom.first) unless Area.find_by_name("Testarea")
     else
       return area
     end
