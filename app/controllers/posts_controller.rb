@@ -1,12 +1,12 @@
 class PostsController < ApplicationController
+
+  before_filter :set_user_and_area, :init_map, :outline_area
+
   # GET /posts
   # GET /posts.xml
   def index
     @page_title = "Posts"
-    @user = current_user
     @posts = Post.all
-    init_map
-    outline_area
 
     respond_to do |format|
       format.html # index.html.erb
@@ -86,24 +86,29 @@ class PostsController < ApplicationController
       format.xml  { head :ok }
     end
   end
-  
+
+  private
+  def set_user_and_area
+    @user = current_user
+    @area = @user && @user.areas.length > 0 && @user.areas.first
+  end
+
   def init_map
     @map = GMap.new("map_div")
     @map.control_init(:small_map => true, :map_type => true)
   end
-  
+
   def outline_area
-     if @user and @user.areas.length > 0 then
-        @area = @user.areas.first
-        polygon = @area.geom
-        envelope = polygon.envelope
-        area_outline = GPolygon.from_georuby(polygon,"#000000",2,0.8,"#aa2222",0.1)
-        center = GLatLng.from_georuby(envelope.center)
-        zoom = @map.get_bounds_zoom_level(GLatLngBounds.from_georuby(envelope))     
-      else
-        center = [58.9, 11.93]
-        zoom = 8
-      end
+    if @area then
+      polygon = @area.geom
+      envelope = polygon.envelope
+      area_outline = GPolygon.from_georuby(polygon,"#cc0000",2,0.8,"#aa2222",0.1)
+      center = GLatLng.from_georuby(envelope.center)
+      zoom = @map.get_bounds_zoom_level(GLatLngBounds.from_georuby(envelope))     
+    else
+      center = [58.9, 11.93]
+      zoom = 8
+    end
     @map.clear_overlays
     @map.center_zoom_init(center,zoom)
     @map.overlay_init(area_outline) if area_outline
