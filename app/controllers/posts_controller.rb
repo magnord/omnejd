@@ -87,7 +87,6 @@ class PostsController < ApplicationController
     end
   end
   
-  private
   def init_map
     @map = GMap.new("map_div")
     @map.control_init(:small_map => true, :map_type => true)
@@ -98,8 +97,7 @@ class PostsController < ApplicationController
         @area = @user.areas.first
         polygon = @area.geom
         envelope = polygon.envelope
-        area_outline = GPolygon.from_georuby(polygon,"#000000",2,0.8,"#ff5555",0.2)
-        puts area_outline
+        area_outline = GPolygon.from_georuby(polygon,"#000000",2,0.8,"#aa2222",0.1)
         center = GLatLng.from_georuby(envelope.center)
         zoom = @map.get_bounds_zoom_level(GLatLngBounds.from_georuby(envelope))     
       else
@@ -108,6 +106,6 @@ class PostsController < ApplicationController
       end
     @map.clear_overlays
     @map.center_zoom_init(center,zoom)
-    @map.add_overlay(area_outline) if area_outline
+    @map.overlay_init(area_outline) if area_outline
   end
 end
