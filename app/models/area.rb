@@ -19,12 +19,7 @@ class Area < ActiveRecord::Base
 
   # Define a test area from sample data
   def self.test_area
-    area = Area.find_by_name("Testarea")
-    if area.nil? then
-     return Area.create(:name => "Testarea", :geom => Sweden5.find_by_gid("66011").geom.first) unless Area.find_by_name("Testarea")
-    else
-      return area
-    end
+    Area.find_by_name(:first, "Testarea") || Area.create(:name => "Testarea", :geom => Sweden5.find_by_gid("66011").geom.first)
   end
 
   # Find all areas containing a point
