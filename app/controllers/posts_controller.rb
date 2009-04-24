@@ -54,12 +54,8 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.xml
   def create
-    @post = Post.new
-    @post.title = params[:post][:title]
-    @post.body = params[:post][:body]
-    @post.user = @user
-    @post.pos = Point.from_x_y(params[:lng], params[:lat])
-
+    @post = Post.new_from_latlng_params_and_user(params, @user)
+  
     respond_to do |format|
       if @post.save
         flash[:notice] = 'Post was successfully created.'
@@ -76,11 +72,8 @@ class PostsController < ApplicationController
   # PUT /posts/1.xml
   def update
     @post = Post.find(params[:id])
-    @post.title = params[:post][:title]
-     @post.body = params[:post][:body]
-     @post.user = @user
-     @post.pos = Point.from_x_y(params[:lng], params[:lat])
-     
+    @post.update_attributes_from_latlng_params_and_user(params, @user)
+    
     respond_to do |format|
       if @post.save
         flash[:notice] = 'Post was successfully updated.'

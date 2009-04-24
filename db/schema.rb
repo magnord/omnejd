@@ -9,14 +9,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090422211716) do
+ActiveRecord::Schema.define(:version => 20090424082128) do
 
   create_table "areas", :force => true do |t|
-    t.column "name", :string
+    t.column "name", :string, :null => false
     t.column "user_id", :integer
     t.column "created_at", :timestamp
     t.column "updated_at", :timestamp
-    t.column "geom", :polygon, :srid => 4326, :null => false
+    t.column "geom", :polygon, :null => false
   end
 
   add_index "areas", ["geom"], :name => "index_areas_on_geom", :spatial=> true 
@@ -32,15 +32,19 @@ ActiveRecord::Schema.define(:version => 20090422211716) do
     t.column "user_id", :integer
     t.column "created_at", :timestamp
     t.column "updated_at", :timestamp
-    t.column "pos", :point, :srid => 4326, :null => false
+    t.column "pos", :point, :null => false
   end
 
   create_table "sweden5", :force => true do |t|
-    t.column "gid", :string, :limit => 20
-    t.column "name", :string, :limit => 50
-    t.column "name_ascii", :string, :limit => 50
-    t.column "geom", :multi_polygon
+    t.column "gid", :string, :null => false
+    t.column "name", :string
+    t.column "name_ascii", :string
+    t.column "created_at", :timestamp
+    t.column "updated_at", :timestamp
+    t.column "geom", :multi_polygon, :null => false
   end
+
+  add_index "sweden5", ["geom"], :name => "index_sweden5_on_geom", :spatial=> true 
 
   create_table "users", :force => true do |t|
     t.column "login", :string, :null => false
