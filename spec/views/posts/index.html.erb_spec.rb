@@ -18,8 +18,8 @@ describe "/posts/index.html.erb" do
 
   it "renders a list of posts" do
     render
-    response.should have_tag("tr>td", "value for title".to_s, 2)
-    response.should have_tag("tr>td", "value for body".to_s, 2)
+    response.should have_tag("b", "value for title".to_s, 2)
+    #response.should have_tag("div", "value for body".to_s, 2)
   end
 end
 

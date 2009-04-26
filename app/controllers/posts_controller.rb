@@ -5,11 +5,11 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.xml
   def index
-    outline_area
+    outline_area(@map, @area)
     @page_title = "Posts"
     @posts = Post.all
     @posts.each do |post|
-      add_post_marker(post)
+      add_post_marker(@map, post)
     end
 
     respond_to do |format|
@@ -21,9 +21,9 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.xml
   def show
-    outline_area
+    outline_area(@map, @area)
     @post = Post.find(params[:id])
-    add_post_marker(@post)
+    add_post_marker(@map, @post)
     
     respond_to do |format|
       format.html # show.html.erb
@@ -34,8 +34,8 @@ class PostsController < ApplicationController
   # GET /posts/new
   # GET /posts/new.xml
   def new
-    outline_area(false)
-    create_draggable_marker
+    outline_area(@map, @area, false)
+    create_draggable_marker(@map)
     @post = Post.new
 
     respond_to do |format|
@@ -46,9 +46,9 @@ class PostsController < ApplicationController
 
   # GET /posts/1/edit
   def edit
-    outline_area(false)
+    outline_area(@map, @area, false)
     @post = Post.find(params[:id])
-    create_draggable_marker_for_edit
+    create_draggable_marker_for_edit(@map, @post)
   end
 
   # POST /posts
@@ -112,40 +112,4 @@ class PostsController < ApplicationController
     @map.control_init(:small_map => true, :map_type => true)
   end
 
-  # Outline the current watched area (first center and zoom the map to suit the extent of the area)
-  def outline_area(draw = true)
-    if @area then
-      polygon = @area.geom
-      envelope = polygon.envelope
-      @map.record_init(GPolygon.from_georuby(polygon,"#cc0000",2,0.8,"#aa2222",0.1).declare('areaOutline'))
-      center = GLatLng.from_georuby(envelope.center)
-      zoom = @map.get_bounds_zoom_level(GLatLngBounds.from_georuby(envelope))     
-    else
-      # No user logged in, center on arbitrary location (shoudl use goelocation on IP).
-      center = [58.9, 11.93]
-      zoom = 8
-    end
-    @map.clear_overlays
-    @map.center_zoom_init(center,zoom)
-    #add_polyline_tooltip('areaOutline', @area.name)
-    @map.record_init("map.addOverlay(areaOutline);") if draw
-  end
-  
-  def add_post_marker(post)
-    @map.overlay_init(GMarker.new([post.pos.y, post.pos.x],
-    :title => post.title,:info_window => post.body)) # TODO: Add maxWidth for info_window
-  end
-  
-  def add_polyline_tooltip(polyline, tooltip)
-    @map.record_init("add_polyline_tooltip(#{polyline},'#{tooltip}');")
-  end
-  # Create a new draggable marker to define the postion of a new post
-  def create_draggable_marker
-    @map.record_init('create_draggable_marker();')
-  end
-  
-  # Create a draggable marker to edit the postion of a post
-  def create_draggable_marker_for_edit
-    @map.record_init("create_draggable_marker_for_edit(#{@post.pos.x},#{@post.pos.y});")
-  end
 end
