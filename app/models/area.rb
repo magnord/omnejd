@@ -40,9 +40,5 @@ class Area < ActiveRecord::Base
   def find_contained_posts
     Post.find_by_sql(["SELECT * FROM posts WHERE ST_Contains(?, posts.pos)", geom.as_hex_ewkb])
   end
-  
-  def self.find_areas_bbox(min_x, min_y, max_x, max_y)
-    #Area.find_by_sql(["SELECT * FROM areas WHERE ST_Contains(areas.geom, ?)", point.as_wkt])
-  end
 end
 

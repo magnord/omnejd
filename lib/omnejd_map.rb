@@ -41,7 +41,7 @@ module OmnejdMap
   # Set map center and zoom level to show all user areas. If no user, use geolocation on IP
   def set_center_and_zoom_for_user_areas(map, user, user_areas)
     if user && !user_areas.empty? then
-      area = user_areas.first
+      area = user_areas.first # TODO: take all user areas into consideration
       polygon = area.geom
       envelope = polygon.envelope
       center = GLatLng.from_georuby(envelope.center)
