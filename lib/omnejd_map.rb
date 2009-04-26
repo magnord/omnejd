@@ -48,15 +48,15 @@ module OmnejdMap
       polygon = area.geom
       envelope = polygon.envelope
       center = GLatLng.from_georuby(envelope.center)
-      zoom = map.get_bounds_zoom_level(GLatLngBounds.from_georuby(envelope))
+      zoom = map.get_bounds_zoom_level(GLatLngBounds.from_georuby(envelope)).to_javascript
     else
-      center = GLatLng.new([58.9, 11.93])
-      zoom = 8
+      center = GLatLng.new([59.32, 18.07])
+      zoom = 13
     end
     map.clear_overlays
     # We can't use YM4R's map.center_zoom_init(center,zoom) because it will insert setCenter before
     # our generated GMap2 load event listener setup (and that order doesn't work).
-    map.record_init("map.setCenter(#{center.to_javascript},#{zoom.to_javascript});")
+    map.record_init("map.setCenter(#{center.to_javascript},#{zoom});")
   end
   
   def add_polyline_tooltip(map, polyline, tooltip)

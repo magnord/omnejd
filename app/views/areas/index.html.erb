@@ -1,4 +1,5 @@
-<div class='span-24 last'>
-	<h3><div id = "area_name">area.name</div></h3>
+<div class='span-16'>
+	<h2><div id = 'area_name'><%= !@user_areas.empty? ? @user_areas.first.name : "No area chosen" %></div></h2>
 </div>
+<div class='span-8 last' id='area_count'></div>
 <%= render :partial => "map" %>

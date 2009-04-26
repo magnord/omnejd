@@ -1,8 +1,10 @@
 page << @map.clear_overlays
-
-for area in @areas do
-  page << GPolygon.from_georuby(area.geom,"#000000",1,0.6,"#ffaaaa",0.1).declare("polygon#{area.id}")
-  page << @map.addOverlay(Variable.new("polygon#{area.id}"))
-  page << "GEvent.addListener(polygon#{area.id}, 'mouseover', function() {  $('area_name').innerHTML = '#{area.name}'; });"
-  puts page
+page << "$('area_count').innerHTML = '#{@areas.length} areas on map';"
+if @areas.length < 100 then 
+  for area in @areas do
+    page << GPolygon.from_georuby(area.geom,"#000000",1,0.6,"#ffaaaa",0.1).declare("polygon#{area.id}")
+    page << @map.addOverlay(Variable.new("polygon#{area.id}"))
+    page << "GEvent.addListener(polygon#{area.id}, 'mouseover', function() {  $('area_name').innerHTML = '#{area.name}'; });"
+  end
+  #else tell user to zoom in to see areas
 end
