@@ -12,7 +12,7 @@ module OmnejdMap
     if area then
       polygon = area.geom
       envelope = polygon.envelope
-      map.record_init(GPolygon.from_georuby(polygon,"#cc0000",2,0.8,"#aa2222",0.1).declare('areaOutline'))
+      map.record_init(GPolygon.from_georuby(polygon,"#cc0000",3,0.4,"#aa2222",0.1).declare('areaOutline'))
       center = GLatLng.from_georuby(envelope.center)
       zoom = map.get_bounds_zoom_level(GLatLngBounds.from_georuby(envelope))     
     else
@@ -26,7 +26,8 @@ module OmnejdMap
     map.record_init("map.addOverlay(areaOutline);") if draw
   end
   
-  def add_find_areas_in_map_event(map)
+  # Add map event to find alla shown areas when map changes
+  def add_map_event_find_areas(map)
     func_str = "bounds = map.getBounds();"
     func_str += remote_function(:url => { :action => :find, :min_x => "minX_ph", :min_y => "minY_ph", 
                                            :max_x => "maxX_ph", :max_y => "maxY_ph"} )
@@ -35,23 +36,27 @@ module OmnejdMap
     func_str[/maxX_ph/] = "'+bounds.getNorthEast().lat()+'"
     func_str[/maxY_ph/] = "'+bounds.getNorthEast().lng()+'"
     map.event_init(map, :load, "function() { " + func_str + " }")
-    map.event_init(map, :moveend, "function() { " + func_str + " }")
+    # This move-end event causes a double event trigger (and a double exepnsive Area.find_by_geom()) 
+    # with the above load event on the first page load. TODO: Make this a single event.
+    map.event_init(map, :moveend, "function() { " + func_str + " }") 
   end
   
   # Set map center and zoom level to show all user areas. If no user, use geolocation on IP
-  def set_center_and_zoom_for_user_areas(map, user, user_areas)
-    if user && !user_areas.empty? then
+  def set_center_and_zoom_for_user_areas(map, user_areas)
+    if !user_areas.empty? then
       area = user_areas.first # TODO: take all user areas into consideration
       polygon = area.geom
       envelope = polygon.envelope
       center = GLatLng.from_georuby(envelope.center)
       zoom = map.get_bounds_zoom_level(GLatLngBounds.from_georuby(envelope))
     else
-      center = [58.9, 11.93]
+      center = GLatLng.new([58.9, 11.93])
       zoom = 8
     end
     map.clear_overlays
-    map.center_zoom_init(center,zoom)
+    # We can't use YM4R's map.center_zoom_init(center,zoom) because it will insert setCenter before
+    # our generated GMap2 load event listener setup (and that order doesn't work).
+    map.record_init("map.setCenter(#{center.to_javascript},#{zoom.to_javascript});")
   end
   
   def add_polyline_tooltip(map, polyline, tooltip)

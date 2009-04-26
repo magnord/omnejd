@@ -27,17 +27,17 @@
   <h1><%= @page_title || "Title not set (do it!)" %></h1>
 </div>
 <div class="span-8 last">
-  <%= link_to "Posts", posts_url %>
-  <%= link_to "Areas", areas_url %>
+	<% if !current_user -%>
+	  <%= link_to "Register", new_account_path %> |
+	  <%= link_to "Log In", new_user_session_path %>
+	<% else -%>
+	  <%= link_to current_user.login + "'s account", account_path %> |
+	  <%= link_to "Logout", user_session_path, :method => :delete, :confirm => "Are you sure you want to logout?" %>
 </div>
 
 <div class='span-16'>
-<% if !current_user -%>
-  <%= link_to "Register", new_account_path %> |
-  <%= link_to "Log In", new_user_session_path %>
-<% else -%>
-  <%= link_to current_user.login + "'s account", account_path %> |
-  <%= link_to "Logout", user_session_path, :method => :delete, :confirm => "Are you sure you want to logout?" %>
+	<%= link_to "Posts", posts_url %>
+  <%= link_to "Areas", areas_url %>
 <% end -%>
 </div>
 <div class="span-8 last">
