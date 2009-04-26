@@ -1,4 +1,6 @@
 module OmnejdMap
+  include ActionView::Helpers::PrototypeHelper
+  include ActionView::Helpers::JavaScriptHelper
   
   def add_post_marker(map, post)
     map.overlay_init(GMarker.new([post.pos.y, post.pos.x],
@@ -24,6 +26,18 @@ module OmnejdMap
     map.record_init("map.addOverlay(areaOutline);") if draw
   end
   
+  def add_find_areas_in_map_event(map)
+    func_str = "bounds = map.getBounds();"
+    func_str += remote_function(:url => { :action => :find, :min_x => "minX_ph", :min_y => "minY_ph", 
+                                           :max_x => "maxX_ph", :max_y => "maxY_ph"} )
+    func_str[/minX_ph/] = "'+bounds.getSouthWest().lat()+'" # replace placeholders
+    func_str[/minY_ph/] = "'+bounds.getSouthWest().lng()+'"
+    func_str[/maxX_ph/] = "'+bounds.getNorthEast().lat()+'"
+    func_str[/maxY_ph/] = "'+bounds.getNorthEast().lng()+'"
+    map.event_init(map, :load, "function() { " + func_str + " }")
+    map.event_init(map, :moveend, "function() { " + func_str + " }")
+  end
+  
   # Set map center and zoom level to show all user areas. If no user, use geolocation on IP
   def set_center_and_zoom_for_user_areas(map, user, user_areas)
     if user && !user_areas.empty? then
@@ -43,6 +57,7 @@ module OmnejdMap
   def add_polyline_tooltip(map, polyline, tooltip)
     map.record_init("add_polyline_tooltip(#{polyline},'#{tooltip}');")
   end
+  
   # Create a new draggable marker to define the postion of a new post
   def create_draggable_marker(map)
     map.record_init('create_draggable_marker();')

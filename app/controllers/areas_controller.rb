@@ -8,11 +8,24 @@ class AreasController < ApplicationController
     @page_title = if @user then "#{@user.login}'s areas" else "Areas" end
     
     set_center_and_zoom_for_user_areas(@map, @user, @user_areas)
+    add_find_areas_in_map_event(@map)
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @areas }
     end
   end
+  
+  # Called (Ajax) by map event
+  def find
+    areas = [] #Area.find_by_geom(:all, [[params[:min_x], params[:min_y]], 
+    #                           [params[:max_x], params[:max_y]]])
+    @map = Variable.new("map")
+    @polygons = []
+    for area in areas do
+      @polygons << GPolygon.from_georuby(area.geom,"#000000",2,0.8,"#ff5555",0.2)
+    end
+  end
+
 
   # GET /areas/1
   # GET /areas/1.xml

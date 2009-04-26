@@ -1,0 +1,4 @@
+<div><b><%=link_to post.title, post %></b></div>
+<%=h post.body %>
+<div class="small"><%= link_to 'Edit', edit_post_path(post) %>
+	<%= link_to 'Destroy', post, :confirm => 'Are you sure?', :method => :delete %></div>

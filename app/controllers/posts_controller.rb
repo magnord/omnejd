@@ -7,7 +7,7 @@ class PostsController < ApplicationController
   def index
     outline_area(@map, @area)
     @page_title = "Posts"
-    @posts = Post.all
+    @posts = find_area_posts
     @posts.each do |post|
       add_post_marker(@map, post)
     end
@@ -110,6 +110,14 @@ class PostsController < ApplicationController
   def init_map
     @map = GMap.new("map_div")
     @map.control_init(:small_map => true, :map_type => true)
+  end
+  
+  def find_area_posts
+    if @area then
+      @area.find_contained_posts
+    else
+      [] # Should return posts in map bounding area (or "browsing area" when this is implemented)
+    end
   end
 
 end
