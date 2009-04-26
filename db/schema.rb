@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090424082128) do
+ActiveRecord::Schema.define(:version => 20090426112129) do
 
   create_table "areas", :force => true do |t|
     t.column "name", :string, :null => false
@@ -25,6 +25,15 @@ ActiveRecord::Schema.define(:version => 20090424082128) do
     t.column "area_id", :integer
     t.column "user_id", :integer
   end
+
+  create_table "bas99", :force => true do |t|
+    t.column "basnamn", :string
+    t.column "created_at", :timestamp
+    t.column "updated_at", :timestamp
+    t.column "geom", :polygon, :null => false
+  end
+
+  add_index "bas99", ["geom"], :name => "index_bas99_on_geom", :spatial=> true 
 
   create_table "posts", :force => true do |t|
     t.column "title", :string
