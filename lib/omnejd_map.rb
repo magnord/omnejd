@@ -37,7 +37,8 @@ module OmnejdMap
     func_str[/maxY_ph/] = "'+bounds.getNorthEast().lng()+'"
     map.event_init(map, :load, "function() { " + func_str + " }")
     # This move-end event causes a double event trigger (and a double exepnsive Area.find_by_geom()) 
-    # with the above load event on the first page load. TODO: Make this a single event.
+    # with the above load event on the first page load. 
+    # TODO: Make this a single event.
     map.event_init(map, :moveend, "function() { " + func_str + " }") 
   end
   
