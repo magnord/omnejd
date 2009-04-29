@@ -2,10 +2,20 @@ page << @map.clear_overlays
 page << "$('area_count').innerHTML = '#{@areas.length} areas on map';"
 if @areas.length < 100 then 
   for area in @areas do
-    page << GPolygon.from_georuby(area.geom,"#000000",1,0.6,"#ffaaaa",0.1).declare("polygon#{area.id}")
+    if @user_areas.map { |a| a.id }.include?(area.id) then  
+      fill_color = '#aa3333'
+      opacity = 0.5
+      weight = 4
+    else
+      fill_color = '#ffaaaa'
+      opacity = 0.1
+      weight = 1
+    end
+    page << GPolygon.from_georuby(area.geom, "#333333", weight, 0.5, fill_color, opacity).declare("polygon#{area.id}")
     page << @map.addOverlay(Variable.new("polygon#{area.id}"))
-    page << "GEvent.addListener(polygon#{area.id}, 'mouseover', function() { this.color='#773333'; this.opacity=0.5; this.redraw(true);  $('area_name').innerHTML = '#{area.name}'; });"
-    page << "GEvent.addListener(polygon#{area.id}, 'mouseout', function() { this.color='#ffaaaa';  this.opacity=0.1; this.redraw(true); });"
+    page << "GEvent.addListener(polygon#{area.id}, 'mouseover', function() { this.color='#bb5555'; this.opacity=0.5; this.redraw(true);  $('area_name').innerHTML = '#{area.name}'; });"
+    page << "GEvent.addListener(polygon#{area.id}, 'mouseout', function() { this.color='#{fill_color}';  this.opacity=#{opacity}; this.redraw(true); });"
+    page << "GEvent.addListener(polygon#{area.id}, 'click', function() { alert('Click #{area.name}!') });"
   end
   #else tell user to zoom in to see areas
 end
