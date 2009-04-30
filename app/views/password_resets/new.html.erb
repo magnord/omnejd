@@ -7,7 +7,5 @@ Fill out the form below and instructions to reset your password will be emailed 
   <label>Email:</label><br />
   <%= text_field_tag "email", {}, :class => 'text' %><br />
   <br />
-  <button type="submit" class="button positive">
-    <img src="/stylesheets/blueprint/plugins/buttons/icons/tick.png" alt=""/> Reset my password
-  </button>
+  <%= submit_button 'Reset my password' %>
 <% end %>
