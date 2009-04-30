@@ -22,25 +22,25 @@ module OmnejdMap
     end
     map.clear_overlays
     map.center_zoom_init(center,zoom)
-    #add_polyline_tooltip('areaOutline', @area.name)
     map.record_init("map.addOverlay(areaOutline);") if draw
   end
   
   # Add map event to find alla shown areas when map changes
   def add_map_event_find_areas(map)
     func_str = "bounds = map.getBounds();"
-    func_str += remote_function(:url => { :action => :find, :min_x => "minX_ph", :min_y => "minY_ph", 
-                                           :max_x => "maxX_ph", :max_y => "maxY_ph"} )
-    func_str[/minX_ph/] = "'+bounds.getSouthWest().lat()+'" # replace placeholders
-    func_str[/minY_ph/] = "'+bounds.getSouthWest().lng()+'"
-    func_str[/maxX_ph/] = "'+bounds.getNorthEast().lat()+'"
-    func_str[/maxY_ph/] = "'+bounds.getNorthEast().lng()+'"
-    map.event_init(map, :load, "function() { " + func_str + " }")
+    func_str += "$.post('areas/find', { 
+      min_x: bounds.getSouthWest().lat(),
+      min_y: bounds.getSouthWest().lng(),
+      max_x: bounds.getNorthEast().lat(),
+      max_y: bounds.getNorthEast().lng()
+    }, null, 'script');"
+    # map.event_init(map, :load, "function() { " + func_str + " }")
     # This move-end event causes a double event trigger (and a double exepnsive Area.find_by_geom()) 
     # with the above load event on the first page load. 
     # TODO: Make this a single event.
     map.event_init(map, :moveend, "function() { " + func_str + " }") 
   end
+  
   
   # Set map center and zoom level to show all user areas. If no user, use geolocation on IP
   def set_center_and_zoom_for_user_areas(map, user_areas)
@@ -58,10 +58,6 @@ module OmnejdMap
     # We can't use YM4R's map.center_zoom_init(center,zoom) because it will insert setCenter before
     # our generated GMap2 load event listener setup (and that order doesn't work).
     map.record_init("map.setCenter(#{center.to_javascript},#{zoom});")
-  end
-  
-  def add_polyline_tooltip(map, polyline, tooltip)
-    map.record_init("add_polyline_tooltip(#{polyline},'#{tooltip}');")
   end
   
   # Create a new draggable marker to define the postion of a new post

@@ -1,0 +1,39 @@
+map.clearOverlays();
+$('#area_count').text('<%=@areas.length-%> areas on map');
+
+// Check if less than 100 areas
+<% if @areas.length < 100 then 
+  for area in @areas do
+	  # Highlight user watched areas 
+    if @user_areas.map { |a| a.id }.include?(area.id) then 
+      fill_color = '#aa3333'
+      opacity = 0.5
+      weight = 5
+		else
+			fill_color = '#ffffff'
+			opacity = 0.0
+			weight = 2
+    end %>
+
+  // Add polygons
+  poly<%=area.id-%> = new GPolygon([<%=area.geom.rings[0].points.map { |p| "new GLatLng(#{p.y},#{p.x})" }.join(',')-%>], 
+    '#333333', <%=weight-%>, 0.5, '<%=fill_color-%>', <%=opacity-%>);
+  map.addOverlay(poly<%=area.id-%>);
+
+  // Highlight area at mousover
+  GEvent.addListener(poly<%=area.id-%>, 'mouseover', function() { 
+		this.color = '#aa3333'; this.opacity = 0.5; this.redraw(true);  
+		$('#area_name').text('<%=area.name-%>');
+	});
+	
+	// Remove highlight at mouseout
+  GEvent.addListener(poly<%=area.id-%>, 'mouseout', function() { 
+	  this.color = '<%=fill_color-%>';  this.opacity = <%=opacity-%>; this.redraw(true); 
+	});
+	
+	// Toggle watched area at click
+  GEvent.addListener(poly<%=area.id-%>, 'click', function() { alert('Click <%=area.name-%>!') });
+  <% end %>
+
+  // More than 100 areas. Tell user to zoom in to see areas.
+<% end %>
