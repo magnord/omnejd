@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" <%= GMap::VML_NAMESPACE %> >
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-  <title><%= controller.controller_name %>: <%= controller.action_name %></title>
+  <title>Omnejd - <%= @page_title || "Title not set" %></title>
   <%= stylesheet_link_tag 'blueprint/screen', :media => 'screen, projection' %>
   <%= stylesheet_link_tag 'blueprint/print', :media => 'print' %>
 <!--[if IE]>
@@ -24,7 +24,7 @@
 <div class='container'>
 	
 <div class="span-16">
-  <h1><%= @page_title || "Title not set (do it!)" %></h1>
+  <h1><%= @page_title || "Title not set" %></h1>
 </div>
 <div class="span-8 last">
 	<% if !current_user -%>
@@ -32,7 +32,7 @@
 	  <%= link_to "Log In", new_user_session_path %>
 	<% else -%>
 	  <%= link_to current_user.login + "'s account", account_path %> |
-	  <%= link_to "Logout", user_session_path, :method => :delete, :confirm => "Are you sure you want to logout?" %>
+	  <%= link_to "Logout", user_session_path, :method => :delete %>
 </div>
 
 <div class='span-16'>
