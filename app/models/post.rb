@@ -20,6 +20,12 @@ class Post < ActiveRecord::Base
   acts_as_taggable
   
   validates_presence_of :title, :body, :pos
+  
+  
+  before_validation do |post|
+    post.title = Sanitize.clean(post.title)
+    post.body = Sanitize.clean(post.body, Sanitize::Config::RELAXED)
+  end
     
 end
 
