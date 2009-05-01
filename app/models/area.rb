@@ -1,10 +1,10 @@
 # == Schema Information
-# Schema version: 20090419181824
+# Schema version: 20090501121320
 #
 # Table name: areas
 #
 #  id         :integer         not null, primary key
-#  name       :string(255)
+#  name       :string(255)     not null
 #  user_id    :integer
 #  created_at :timestamp
 #  updated_at :timestamp

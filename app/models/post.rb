@@ -1,15 +1,16 @@
 # == Schema Information
-# Schema version: 20090419181824
+# Schema version: 20090501121320
 #
 # Table name: posts
 #
-#  id         :integer         not null, primary key
-#  title      :string(255)
-#  body       :text
-#  user_id    :integer
-#  created_at :timestamp
-#  updated_at :timestamp
-#  pos        :geometry        not null, point, -1
+#  id              :integer         not null, primary key
+#  title           :string(255)
+#  body            :text
+#  user_id         :integer
+#  created_at      :timestamp
+#  updated_at      :timestamp
+#  cached_tag_list :string(255)
+#  pos             :geometry        not null, point, -1
 #
 
 class Post < ActiveRecord::Base

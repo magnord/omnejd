@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090419181824
+# Schema version: 20090501121320
 #
 # Table name: users
 #
@@ -20,6 +20,10 @@
 #  last_login_ip       :string(255)
 #  created_at          :timestamp
 #  updated_at          :timestamp
+#  avatar_file_name    :string(255)
+#  avatar_content_type :string(255)
+#  avatar_file_size    :integer
+#  avatar_updated_at   :timestamp
 #
 
 class User < ActiveRecord::Base
