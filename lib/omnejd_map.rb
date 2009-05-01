@@ -8,21 +8,23 @@ module OmnejdMap
   end
   
   # Outline the current watched area (first center and zoom the map to suit the extent of the area)
-  def outline_area(map, area, draw = true)
-    if area then
-      polygon = area.geom
-      envelope = polygon.envelope
-      map.record_init(GPolygon.from_georuby(polygon,"#cc0000",3,0.4,"#aa2222",0.1).declare('areaOutline'))
+  def outline_areas(map, areas, draw = true)
+    if areas && !areas.empty? then
+      multi_polygon = MultiPolygon.from_polygons(areas.map {|a| a.geom})
+      envelope = multi_polygon.envelope
       center = GLatLng.from_georuby(envelope.center)
-      zoom = map.get_bounds_zoom_level(GLatLngBounds.from_georuby(envelope))     
+      zoom = map.get_bounds_zoom_level(GLatLngBounds.from_georuby(envelope)) 
+      map.clear_overlays  
+      for area in areas do
+        map.record_init(GPolygon.from_georuby(area.geom,"#333333", 1, 0.5, "#ff3333", 0.1).declare('areaOutline')) if draw
+        map.record_init("map.addOverlay(areaOutline);") if draw
+      end  
     else
       # No area defined, center on arbitrary location (should use goelocation on IP).
       center = [58.9, 11.93]
       zoom = 8
     end
-    map.clear_overlays
     map.center_zoom_init(center,zoom)
-    map.record_init("map.addOverlay(areaOutline);") if draw
   end
   
   # Add map event to find alla shown areas when map changes
@@ -45,9 +47,8 @@ module OmnejdMap
   # Set map center and zoom level to show all user areas. If no user, use geolocation on IP
   def set_center_and_zoom_for_user_areas(map, user_areas)
     if !user_areas.empty? then
-      area = user_areas.first # TODO: take all user areas into consideration
-      polygon = area.geom
-      envelope = polygon.envelope
+      multi_polygon = MultiPolygon.from_polygons(user_areas.map {|a| a.geom})
+      envelope = multi_polygon.envelope
       center = GLatLng.from_georuby(envelope.center)
       zoom = map.get_bounds_zoom_level(GLatLngBounds.from_georuby(envelope)).to_javascript
     else

@@ -1,13 +1,13 @@
 class PostsController < ApplicationController
 
-  before_filter :set_user_and_area, :init_map
+  before_filter :set_user_and_user_areas, :init_map
 
   # GET /posts
   # GET /posts.xml
   def index
-    outline_area(@map, @area)
+    outline_areas(@map, @areas)
     @page_title = "Posts"
-    @posts = find_area_posts
+    @posts = find_areas_posts
     @posts.each do |post|
       add_post_marker(@map, post)
     end
@@ -21,7 +21,7 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.xml
   def show
-    outline_area(@map, @area)
+    outline_areas(@map, @areas)
     @post = Post.find(params[:id])
     add_post_marker(@map, @post)
     
@@ -34,7 +34,7 @@ class PostsController < ApplicationController
   # GET /posts/new
   # GET /posts/new.xml
   def new
-    outline_area(@map, @area, false)
+    outline_areas(@map, @areas, false)
     create_draggable_marker(@map)
     @post = Post.new
 
@@ -46,7 +46,7 @@ class PostsController < ApplicationController
 
   # GET /posts/1/edit
   def edit
-    outline_area(@map, @area, false)
+    outline_areas(@map, @areas, false)
     @post = Post.find(params[:id])
     create_draggable_marker_for_edit(@map, @post)
   end
@@ -102,22 +102,23 @@ class PostsController < ApplicationController
   end
 
   private
-  def set_user_and_area
-    @user = current_user
-    @area = @user && @user.areas.length > 0 && @user.areas.first
-  end
+  def set_user_and_user_areas
+     @user = current_user
+     # This is probably very ineffiecient
+     @areas = if @user then @user.areas else [] end
+   end
 
   def init_map
     @map = GMap.new("map_div")
     @map.control_init(:small_map => true, :map_type => true)
   end
   
-  def find_area_posts
-    if @area then
-      @area.find_contained_posts
-    else
-      [] # Should return posts in map bounding area (or "browsing area" when this is implemented)
+  def find_areas_posts
+    posts = []
+    for area in @areas do
+      posts.concat area.find_contained_posts
     end
+    return posts.uniq
   end
 
 end
