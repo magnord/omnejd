@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090501094024) do
+ActiveRecord::Schema.define(:version => 20090501102410) do
 
   create_table "areas", :force => true do |t|
     t.column "name", :string, :null => false
@@ -20,11 +20,6 @@ ActiveRecord::Schema.define(:version => 20090501094024) do
   end
 
   add_index "areas", ["geom"], :name => "index_areas_on_geom", :spatial=> true 
-
-  create_table "areas_users", :id => false, :force => true do |t|
-    t.column "area_id", :integer
-    t.column "user_id", :integer
-  end
 
   create_table "bas99", :force => true do |t|
     t.column "basnamn", :string
@@ -85,6 +80,13 @@ ActiveRecord::Schema.define(:version => 20090501094024) do
     t.column "last_login_at", :timestamp
     t.column "current_login_ip", :string
     t.column "last_login_ip", :string
+    t.column "created_at", :timestamp
+    t.column "updated_at", :timestamp
+  end
+
+  create_table "watched_areas", :force => true do |t|
+    t.column "user_id", :integer
+    t.column "area_id", :integer
     t.column "created_at", :timestamp
     t.column "updated_at", :timestamp
   end

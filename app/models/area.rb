@@ -15,9 +15,6 @@ class Area < ActiveRecord::Base
   
   acts_as_geom :geom
 
-  # Watching users
-  has_and_belongs_to_many :users
-
   # Define a test area from sample data
   def self.test_area
     area = Bas99.find_by_basnamn("Kronoberg")

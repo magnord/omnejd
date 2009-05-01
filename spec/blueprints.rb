@@ -27,3 +27,7 @@ Area.blueprint do
   geom 
 end
 
+WatchedArea.blueprint do
+  user
+  area
+end

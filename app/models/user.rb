@@ -27,13 +27,16 @@ class User < ActiveRecord::Base
   has_many :posts
 
   # Watched areas
-  has_and_belongs_to_many :areas
+  has_many :watched_areas
+  has_many :areas, :through => :watched_areas
 
   # Add a test area to all users (when running in development)
   after_create :add_test_area
 
   def add_test_area
-    if ENV['RAILS_ENV'] == "development" then areas << Area.test_area end
+    if ENV['RAILS_ENV'] == "development" then 
+      watched_areas << WatchedArea.create(:area => Area.test_area)
+    end
   end
 
   acts_as_authentic do |c|
