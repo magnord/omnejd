@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090501093734) do
+ActiveRecord::Schema.define(:version => 20090501094024) do
 
   create_table "areas", :force => true do |t|
     t.column "name", :string, :null => false
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(:version => 20090501093734) do
     t.column "created_at", :timestamp
     t.column "updated_at", :timestamp
     t.column "pos", :point, :null => false
+    t.column "cached_tag_list", :string
   end
 
   create_table "sweden5", :force => true do |t|
