@@ -32,7 +32,26 @@ $('#area_count').text('<%=@areas.length-%> areas on map');
 	});
 	
 	// Toggle watched area at click
-  GEvent.addListener(poly<%=area.id-%>, 'click', function() { alert('Click <%=area.name-%>!') });
+  GEvent.addListener(poly<%=area.id-%>, 'click', function() { 
+	    if (this.opacity < 0.1) { // TODO: We need config settings for these values
+		    // Add area to user's watched areas
+		    $.post('<%=user_watched_areas_path(@user)-%>', 
+		      { area_id: <%=area.id-%> }, null, 'script');
+		 } else {
+			 $.ajax({
+			                url: '<%=user_watched_areas_path(@user)-%>',
+			                type: 'post',
+			                dataType: 'script',
+			                data: { '_method': 'delete', 'area_id': <%=area.id-%> },
+			                success: function() {
+			                    // the item has been deleted
+			                    // might want to remove it from the interface
+			                    // or redirect or reload by setting window.location
+			                }
+		 });
+		}
+	});
+
   <% end %>
 
   // More than 100 areas. Tell user to zoom in to see areas.

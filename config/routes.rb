@@ -3,7 +3,7 @@ ActionController::Routing::Routes.draw do |map|
   # See how all your routes lay out with "rake routes"
 
   map.resource :account, :controller => "users"
-  map.resources :users
+  map.resources :users, :has_many => :watched_areas
     
   map.resource :user_session
   map.resource :password_reset
