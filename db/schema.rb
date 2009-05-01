@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090426112129) do
+ActiveRecord::Schema.define(:version => 20090501093734) do
 
   create_table "areas", :force => true do |t|
     t.column "name", :string, :null => false
@@ -54,6 +54,20 @@ ActiveRecord::Schema.define(:version => 20090426112129) do
   end
 
   add_index "sweden5", ["geom"], :name => "index_sweden5_on_geom", :spatial=> true 
+
+  create_table "taggings", :force => true do |t|
+    t.column "tag_id", :integer
+    t.column "taggable_id", :integer
+    t.column "taggable_type", :string
+    t.column "created_at", :timestamp
+  end
+
+  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
+  add_index "taggings", ["taggable_id", "taggable_type"], :name => "index_taggings_on_taggable_id_and_taggable_type"
+
+  create_table "tags", :force => true do |t|
+    t.column "name", :string
+  end
 
   create_table "users", :force => true do |t|
     t.column "login", :string, :null => false
