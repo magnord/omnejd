@@ -45,6 +45,8 @@ class User < ActiveRecord::Base
     c.perishable_token_valid_for = 30.minutes
   end
 
+  has_attached_file :avatar, :styles => { :medium => "100x100>", :thumb => "50x50>" }
+
 
   def deliver_password_reset_instructions!  
     reset_perishable_token!  
