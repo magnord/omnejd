@@ -28,7 +28,7 @@ module OmnejdMap
   # Add map event to find alla shown areas when map changes
   def add_map_event_find_areas(map)
     func_str = "bounds = map.getBounds();"
-    func_str += "$.post('areas/find', { 
+    func_str += "$.get('#{find_areas_path}', { 
       min_x: bounds.getSouthWest().lat(),
       min_y: bounds.getSouthWest().lng(),
       max_x: bounds.getNorthEast().lat(),

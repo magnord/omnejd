@@ -10,9 +10,7 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :posts
   
-  map.resources :areas
-  map.find 'areas/find', :controller => 'areas', :action=>"find"
-  
+  map.resources :areas, :collection => { :find => :get }
   
   map.root :controller => "user_sessions", :action => "new" # optional, this just sets the root route
 
