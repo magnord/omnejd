@@ -12,6 +12,7 @@
 #
 
 class Area < ActiveRecord::Base
+  
   acts_as_geom :geom
 
   # Watching users
@@ -40,5 +41,6 @@ class Area < ActiveRecord::Base
   def find_contained_posts
     Post.find_by_sql(["SELECT * FROM posts WHERE ST_Contains(?, posts.pos)", geom.as_hex_ewkb])
   end
+  
 end
 
