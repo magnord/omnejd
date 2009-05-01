@@ -54,7 +54,9 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.xml
   def create
-    @post = Post.new_from_latlng_params_and_user(params, @user)
+    @post = Post.new params[:post]
+    @post.user = @user
+    @post.pos = Point.from_x_y(params[:lng], params[:lat])
   
     respond_to do |format|
       if @post.save
@@ -72,9 +74,7 @@ class PostsController < ApplicationController
   # PUT /posts/1.xml
   def update
     @post = Post.find(params[:id])
-    @post.title = params[:post][:title]
-    @post.body = params[:post][:body]
-    @post.user = @user
+    @post.attributes = params[:post]
     @post.pos = Point.from_x_y(params[:lng], params[:lat])
     
     respond_to do |format|
