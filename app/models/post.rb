@@ -19,10 +19,7 @@ class Post < ActiveRecord::Base
   acts_as_geom :pos
   acts_as_taggable
   
-  def self.new_from_latlng_params_and_user(params, new_user)
-    Post.new(:title => params[:post][:title], :body => params[:post][:body], :user => new_user,
-      :pos => Point.from_x_y(params[:lng], params[:lat]))
-  end
-  
+  validates_presence_of :title, :body, :user_id, :pos
+    
 end
 

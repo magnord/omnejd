@@ -10,6 +10,10 @@
 	<%= f.label :body %><br />
 	<%= f.text_area :body, :class => 'mce-editor' %>
 </p>
+<p>
+	<%= f.label :tag_list %><br />
+	<%= f.text_field :tag_list %>
+</p>
 <%= text_field_tag :lat -%> <%= text_field_tag :lng -%>
 <p>
 	<%= submit_button button_label %>
