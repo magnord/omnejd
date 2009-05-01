@@ -19,7 +19,7 @@ class Post < ActiveRecord::Base
   acts_as_geom :pos
   acts_as_taggable
   
-  validates_presence_of :title, :body, :user_id, :pos
+  validates_presence_of :title, :body, :pos
     
 end
 

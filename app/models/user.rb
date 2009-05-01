@@ -24,7 +24,7 @@
 
 class User < ActiveRecord::Base
   
-  has_many :posts
+  has_many :posts, :dependent => :nullify
 
   # Watched areas
   has_and_belongs_to_many :areas
