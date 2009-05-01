@@ -1,3 +1,4 @@
+<% use_tinymce -%>
 <% form_for(post) do |f| %>
 <%= f.error_messages %>
 
@@ -7,7 +8,7 @@
 </p>
 <p>
 	<%= f.label :body %><br />
-	<%= f.text_area :body %>
+	<%= f.text_area :body, :class => 'mce-editor' %>
 </p>
 <%= text_field_tag :lat -%> <%= text_field_tag :lng -%>
 <p>
