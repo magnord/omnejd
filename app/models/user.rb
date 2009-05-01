@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
   has_many :posts, :dependent => :nullify
 
   # Watched areas
-  has_many :watched_areas
+  has_many :watched_areas, :dependent => :destroy
   has_many :areas, :through => :watched_areas
 
   # Add a test area to all users (when running in development)

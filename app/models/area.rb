@@ -13,6 +13,8 @@
 
 class Area < ActiveRecord::Base
   
+  has_many :watched_areas, :dependent => :destroy
+  
   acts_as_geom :geom
 
   # Define a test area from sample data
