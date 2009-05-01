@@ -32,20 +32,76 @@ function create_draggable_marker_for_edit(lat, lng) {
 	});
 }
 
-// Attach mouseover event to a polyline that will trigger the tooltip
-function add_polyline_tooltip(polyline, tooltip) {
-	GEvent.addListener(polyline, 'mouseover', function() {
-		this.overlay = new MapTooltip(this, tooltip);
-		map.addOverlay(this.overlay);
-		// Attach mousout event to the polyline that will delete the tooltip
-		GEvent.addListener(polyline, 'mouseout', function() {
-			map.removeOverlay(this.overlay);
-		});
-	});
-}
-
 function updateLatlngText(lat, lng){
 	$('#lat').val(lat);
 	$('#lng').val(lng);
+}
+
+// Draw a watched area in the area selection map
+function drawWatchedArea(points, userId, areaId, watchedId, name) {
+	// Add polygon
+  poly = new GPolygon(points, '#333333', 2, 0.8, '#aa3333', 0.5);
+  poly.watchedId = watchedId;
+  poly.name = name;
+  poly.userId = userId;
+  poly.areaId = areaId;
+  map.addOverlay(poly);
+  addWatchedAreaEvents(poly);
+  return poly;
+}
+
+function addWatchedAreaEvents(poly) {
+  // Write area name at mousover
+  GEvent.clearInstanceListeners(poly);
+  GEvent.addListener(poly, 'mouseover', function() { 
+    $('#area_name').text(this.name);
+  });
+
+  // Delete watched area at click
+  GEvent.addListener(poly, 'click', function() { 
+	  currentPoly = this;
+    $.ajax({
+      url: '/users/'+this.userId+'/watched_areas/'+this.watchedId+'.js',
+      type: 'post',
+      dataType: 'script',
+      data: { '_method': 'delete' },
+      success: function() { 
+        }
+      });
+    });
+}
+
+// Draw an unwatched area in the area selection map
+function drawArea(points, userId, areaId, name) {
+  // Add polygon
+  poly = new GPolygon(points, '#333333', 2, 0.5, '#aa3333', 0.0);
+  poly.watchedId = 0;
+  poly.name = name;
+  poly.userId = userId;
+  poly.areaId = areaId;
+  map.addOverlay(poly);
+	addAreaEvents(poly);
+	return poly;
+}
+
+function addAreaEvents(poly) {
+ // Highlight area at mousover
+  GEvent.clearInstanceListeners(poly);
+  GEvent.addListener(poly, 'mouseover', function() { 
+    this.opacity = 0.5; this.redraw(true);  
+    $('#area_name').text(this.name);
+  });
+
+  // Remove highlight at mouseout
+  GEvent.addListener(poly, 'mouseout', function() { 
+    this.opacity = 0.0; this.redraw(true); 
+  });
+
+  // Add unwatched area to watched at click
+  GEvent.addListener(poly, 'click', function() { 
+	  currentPoly = this;
+    $.post('/users/'+this.userId+'/watched_areas.js', 
+      { area_id: this.areaId }, null, 'script');
+  });
 }
 

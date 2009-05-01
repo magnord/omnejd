@@ -1,3 +1,7 @@
+// Global variable to hold the polygon currently acted upon
+var currentPoly;
+
+// Set format on all ajax requests (not sure this works as it should).
 jQuery.ajaxSetup({  
 	'beforeSend': function (xhr) {xhr.setRequestHeader("Accept", "text/javascript")}  
 });

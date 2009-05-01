@@ -69,4 +69,9 @@ module OmnejdMap
   def create_draggable_marker_for_edit(map, post)
     map.record_init("create_draggable_marker_for_edit(#{post.pos.y},#{post.pos.x});")
   end
+  
+  # Generate string of GLatGng constructors for use in GPolygon
+  def genGLatLngs(area)
+    area.geom.rings[0].points.map { |p| "new GLatLng(#{p.y},#{p.x})" }.join(',')
+  end
 end
