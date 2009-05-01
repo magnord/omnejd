@@ -8,9 +8,7 @@ class WatchedAreasController < ApplicationController
   end
 
   def destroy
-    area = WatchedArea.find(:first, 
-      :conditions => ["user_id = ? AND area_id = ?", params(:user_id), params(:area_id)])
-    WatchedArea.destroy(area.id)
+    WatchedArea.destroy(params[:id])
   end
 
 end

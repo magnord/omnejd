@@ -1,64 +1,71 @@
 map.clearOverlays();
 $('#area_count').text('<%=@areas.length-%> areas on map');
 
+// Draw all watched areas
+<% for watched_area in @watched_areas do
+  area = watched_area.area
+  # Highlight user watched areas 
+  fill_color = '#aa3333'
+  opacity = 0.5
+  weight = 5
+  %>
+
+  // Add polygons
+  poly<%=area.id-%> = new GPolygon([<%=area.geom.rings[0].points.map { |p| "new GLatLng(#{p.y},#{p.x})" }.join(',')-%>], 
+  '#333333', <%=weight-%>, 0.5, '<%=fill_color-%>', <%=opacity-%>);
+  map.addOverlay(poly<%=area.id-%>);
+
+  // Toggle watched area at click
+  GEvent.addListener(poly<%=area.id-%>, 'click', function() { 
+    $.ajax({
+      url: '/users/<%=@user.id-%>/watched_areas/<%=watched_area.id-%>.js',
+      type: 'post',
+      dataType: 'script',
+      data: { '_method': 'delete' },
+      success: function() {
+        // the item has been deleted
+        // might want to remove it from the interface
+        // or redirect or reload by setting window.location
+        }
+      });
+    });
+
+<% end %>
+
 // Check if less than 100 areas
 <% if @areas.length < 100 then 
-	for area in @areas do
-		# Highlight user watched areas 
-		if @user_areas.map { |a| a.id }.include?(area.id) then 
-			fill_color = '#aa3333'
-			opacity = 0.5
-			weight = 5
-			watched = true;
-		else
-			fill_color = '#ffffff'
-			opacity = 0.0
-			weight = 2
-			watched = false;
-		end 
-		%>
+# Draw all all areas except the watched areas
+  for area in @areas do
+	  if @watched_areas.collect {|w| w.area_id }.include?(area.id) then next end
+    fill_color = '#ffffff'
+    opacity = 0.0
+    weight = 2
+%>
 
-		// Add polygons
-		poly<%=area.id-%> = new GPolygon([<%=area.geom.rings[0].points.map { |p| "new GLatLng(#{p.y},#{p.x})" }.join(',')-%>], 
-		'#333333', <%=weight-%>, 0.5, '<%=fill_color-%>', <%=opacity-%>);
-		map.addOverlay(poly<%=area.id-%>);
+  // Add polygons
+  poly<%=area.id-%> = new GPolygon([<%=area.geom.rings[0].points.map { |p| "new GLatLng(#{p.y},#{p.x})" }.join(',')-%>], 
+    '#333333', <%=weight-%>, 0.5, '<%=fill_color-%>', <%=opacity-%>);
+  map.addOverlay(poly<%=area.id-%>);
 
-		// Highlight area at mousover
-		GEvent.addListener(poly<%=area.id-%>, 'mouseover', function() { 
-			this.color = '#aa3333'; this.opacity = 0.5; this.redraw(true);  
-			$('#area_name').text('<%=area.name-%>');
-		});
+  // Highlight area at mousover
+  GEvent.addListener(poly<%=area.id-%>, 'mouseover', function() { 
+    this.color = '#aa3333'; this.opacity = 0.5; this.redraw(true);  
+    $('#area_name').text('<%=area.name-%>');
+  });
 
-		// Remove highlight at mouseout
-		GEvent.addListener(poly<%=area.id-%>, 'mouseout', function() { 
-			this.color = '<%=fill_color-%>';  this.opacity = <%=opacity-%>; this.redraw(true); 
-		});
+  // Remove highlight at mouseout
+  GEvent.addListener(poly<%=area.id-%>, 'mouseout', function() { 
+    this.color = '<%=fill_color-%>';  this.opacity = <%=opacity-%>; this.redraw(true); 
+  });
 
-		// Toggle watched area at click
-		GEvent.addListener(poly<%=area.id-%>, 'click', function() { 
-			<% if !watched then %>
-				// Add area to user's watched areas
-				$.post('<%=user_watched_areas_path(@user)-%>', 
-				{ area_id: <%=area.id-%> }, null, 'script');
-			<% else %>
-			  // Remove area from watched areas
-					$.post('<%=user_watched_areas_path(@user)-%>?_method=delete', 
-					{ area_id: <%=area.id-%> }, null, 'script');
-				//$.ajax({
-				//	url: '<%=user_watched_areas_path(@user)-%>',
-				//	type: 'post',
-				//	dataType: 'script',
-				//	data: { '_method': 'delete', 'area_id': <%=area.id-%> },
-				//	success: function() {
-						// the item has been deleted
-						// might want to remove it from the interface
-						// or redirect or reload by setting window.location
-				//	}
-				//});
-				<% end %>
-		});
+  // Add unwatched area to watched at click
+  GEvent.addListener(poly<%=area.id-%>, 'click', function() { 
+    $.post('<%=user_watched_areas_path(@user)-%>.js', 
+      { area_id: <%=area.id-%> }, null, 'script');
+  });
 
-		<% end %>
+<% end %>
 
-		// More than 100 areas. Tell user to zoom in to see areas.
-		<% end %>
+<% else %>
+// More than 100 areas. Tell user to zoom in to see areas.
+<% end %>

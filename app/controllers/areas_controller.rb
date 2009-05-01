@@ -99,6 +99,8 @@ class AreasController < ApplicationController
   private
    def set_user_and_user_areas
      @user = current_user
+     # This is probably very ineffiecient
+     @watched_areas = if @user then @user.watched_areas else [] end
      @user_areas = if @user then @user.areas else [] end
    end
 
