@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
   has_many :areas, :through => :watched_areas
 
   # Add a test area to all users (when running in development)
-  after_create :add_test_area
+  #after_create :add_test_area
 
   def add_test_area
     if ENV['RAILS_ENV'] == "development" then 

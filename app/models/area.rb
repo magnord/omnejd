@@ -20,8 +20,7 @@ class Area < ActiveRecord::Base
 
   # Define a test area from sample data
   def self.test_area
-    area = Bas99.find_by_basnamn("Kronoberg")
-    Area.find_by_name(:first, "Testarea") || Area.create(:name => area.basnamn, :geom => area.geom)
+    Area.find_by_name("Kronoberg")
   end
   
   # Copy areas from sample DB bas99 to areas

@@ -15,7 +15,13 @@ $('#area_count').text('<%=@areas.length-%> areas on map');
   '#333333', <%=weight-%>, 0.5, '<%=fill_color-%>', <%=opacity-%>);
   map.addOverlay(poly<%=area.id-%>);
 
-  // Toggle watched area at click
+ // Write area name at mousover
+  GEvent.addListener(poly<%=area.id-%>, 'mouseover', function() { 
+    $('#area_name').text('<%=area.name-%>');
+  });
+
+
+  // Delete watched area at click
   GEvent.addListener(poly<%=area.id-%>, 'click', function() { 
     $.ajax({
       url: '/users/<%=@user.id-%>/watched_areas/<%=watched_area.id-%>.js',
@@ -36,7 +42,7 @@ $('#area_count').text('<%=@areas.length-%> areas on map');
 <% if @areas.length < 100 then 
 # Draw all all areas except the watched areas
   for area in @areas do
-	  if @watched_areas.collect {|w| w.area_id }.include?(area.id) then next end
+	  if !@watched_areas.collect {|w| w.area_id }.include?(area.id) then 
     fill_color = '#ffffff'
     opacity = 0.0
     weight = 2
@@ -63,6 +69,7 @@ $('#area_count').text('<%=@areas.length-%> areas on map');
     $.post('<%=user_watched_areas_path(@user)-%>.js', 
       { area_id: <%=area.id-%> }, null, 'script');
   });
+  <% end %>
 
 <% end %>
 
