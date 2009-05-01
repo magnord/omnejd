@@ -4,3 +4,4 @@ log/*
 tmp/*
 db/development_structure.sql
 lib/blueprint/lib/settings.yml
+public/system/*

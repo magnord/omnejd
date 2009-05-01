@@ -1,6 +1,10 @@
 <% @page_title = "Edit My Account" -%>
  
-<% form_for @user, :url => account_path do |f| %>
+<% form_for @user, :url => account_path, :html => { :multipart => true } do |f| %>
+  <%= f.label :avatar %><br />
+  <%= image_tag @user.avatar.url(:medium) %>
+  <%= f.file_field :avatar %>
+  <br />
   <%= f.error_messages %>
   <%= render :partial => "form", :object => f %>
   <%= submit_button 'Update' %>
