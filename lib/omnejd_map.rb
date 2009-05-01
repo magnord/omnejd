@@ -67,6 +67,6 @@ module OmnejdMap
 
   # Create a draggable marker to edit the postion of a post
   def create_draggable_marker_for_edit(map, post)
-    map.record_init("create_draggable_marker_for_edit(#{post.pos.x},#{post.pos.y});")
+    map.record_init("create_draggable_marker_for_edit(#{post.pos.y},#{post.pos.x});")
   end
 end
