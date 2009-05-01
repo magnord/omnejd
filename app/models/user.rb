@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   has_attached_file :avatar, :styles => { :medium => "100x100>", :thumb => "50x50>" }
 
 
-  validate_uniqueness_of :login, :email, :case_sensitive => false
+  validates_uniqueness_of :login, :email, :case_sensitive => false
   
 
   def deliver_password_reset_instructions!  
