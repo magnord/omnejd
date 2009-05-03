@@ -1,3 +1,3 @@
-Given /^an existing user "pelle$/ do
-  User.make(:login => "pelle")
+Given /^an existing user "([^\"]*)"$/ do |login|
+  User.make(:login => login)
 end
