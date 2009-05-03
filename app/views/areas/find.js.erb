@@ -1,13 +1,14 @@
 map.clearOverlays();
 $('#area_count').text('<%=@areas.length-%> areas on map');
 
+<%   userId = @user ? @user.id : 0 %>
 // Draw all watched areas
 <% for watched_area in @watched_areas do
   area = watched_area.area
 %>
 	points = [<%=genGLatLngs(area)-%>];
   poly<%=area.id-%> = drawWatchedArea(points, 
-    <%=@user.id-%>, <%=area.id-%>, <%=watched_area.id-%>, '<%=area.name-%>');
+    <%=userId-%>, <%=area.id-%>, <%=watched_area.id-%>, '<%=area.name-%>');
 <% end %>
 
 // Check if less than 100 areas
@@ -18,7 +19,7 @@ $('#area_count').text('<%=@areas.length-%> areas on map');
 %>
   points = [<%=genGLatLngs(area)-%>];
   poly<%=area.id-%> = drawArea(points, 
-    <%=@user.id-%>, <%=area.id-%>, '<%=area.name-%>');
+    <%=userId-%>, <%=area.id-%>, '<%=area.name-%>');
 
   <% end %>
 
