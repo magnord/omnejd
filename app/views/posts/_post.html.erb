@@ -3,6 +3,6 @@
   <b><%=link_to post.title, post %></b>
 </div>
 <%= post.body %>
-<div class="small"><%= link_to 'Edit', edit_post_path(post) %>
+<div class="small">Tags: <%= post.tag_list %> <%= link_to 'Edit', edit_post_path(post) %>
   <%= link_to 'Destroy', post, :confirm => 'Are you sure?', :method => :delete %>
 </div>
