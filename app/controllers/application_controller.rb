@@ -6,9 +6,6 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
-  # Default SRID is -1 for now (This should probably be in an initializer)
-  # GeoRuby::SimpleFeatures::DEFAULT_SRID = 4326
-
   filter_parameter_logging :password, :password_confirmation
   helper_method :current_user_session, :current_user
 

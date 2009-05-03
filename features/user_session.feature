@@ -12,10 +12,10 @@ Scenario: Login a registered user
   
 Scenario: Login a unregistered user
 
-	  When I am on the homepage
-	  And I follow "Log In"
-	  And I fill in "Login" with "ickepelle"
-	  And I fill in "Password" with "password"
-		And I press "Login"
-		Then I should see "Login does not exist"
+  When I am on the homepage
+  And I follow "Log In"
+  And I fill in "Login" with "ickepelle"
+  And I fill in "Password" with "password"
+	And I press "Login"
+	Then I should see "Login does not exist"
 
