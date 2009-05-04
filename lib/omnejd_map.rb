@@ -48,8 +48,8 @@ module OmnejdMap
        max_x: bounds.getNorthEast().lat(),
        max_y: bounds.getNorthEast().lng()
      }, null, 'script');"
-     map.event_init(map, :load, "function() { " + func_str + " }") 
      map.event_init(map, :moveend, "function() { " + func_str + " }") 
+     map.record_init("GEvent.trigger(map, 'moveend');")
    end
   
   # Set map center and zoom level to show all user areas. If no user, use geolocation on IP

@@ -1,5 +1,5 @@
 <div>
-  <%= image_tag(post.user.avatar.url(:thumb), :align => :left) if post.user && post.user.avatar %>
+  <%= image_tag(post.user.avatar.url(:thumb), :align => :right) if post.user && post.user.avatar %>
   <b><%=link_to post.title, post %></b>
 </div>
 <%= post.body %>
