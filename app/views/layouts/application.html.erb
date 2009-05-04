@@ -33,12 +33,12 @@
 	<% else -%>
 	  <%= link_to current_user.login + "'s account", account_path %> |
 	  <%= link_to "Logout", user_session_path, :method => :delete %>
+	<% end %>
 </div>
 
 <div class='span-16'>
 	<%= link_to "Posts", posts_url %>
   <%= link_to "Areas", areas_url %>
-<% end -%>
 </div>
 <div class="span-8 last">
   <%= pluralize User.logged_in.count, "user" %> currently logged in<br />

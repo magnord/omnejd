@@ -8,7 +8,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :user_session
   map.resource :password_reset
   
-  map.resources :posts
+  map.resources :posts, :collection => { :find => :get }
   
   map.resources :areas, :collection => { :find => :get }
   

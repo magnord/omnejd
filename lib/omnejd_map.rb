@@ -20,14 +20,14 @@ module OmnejdMap
         map.record_init("map.addOverlay(areaOutline);") if draw
       end  
     else
-      # No area defined, center on arbitrary location (should use goelocation on IP).
-      center = [58.9, 11.93]
-      zoom = 8
+      # No area defined, center on arbitrary location (should use geolocation on IP).
+      center = [59.32, 18.07]
+      zoom = 13
     end
     map.center_zoom_init(center,zoom)
   end
   
-  # Add map event to find alla shown areas when map changes
+  # Add map event to find all shown areas when map changes
   def add_map_event_find_areas(map)
     func_str = "bounds = map.getBounds();"
     func_str += "$.get('#{find_areas_path}', { 
@@ -36,13 +36,21 @@ module OmnejdMap
       max_x: bounds.getNorthEast().lat(),
       max_y: bounds.getNorthEast().lng()
     }, null, 'script');"
-    # map.event_init(map, :load, "function() { " + func_str + " }")
-    # This move-end event causes a double event trigger (and a double exepnsive Area.find_by_geom()) 
-    # with the above load event on the first page load. 
-    # TODO: Make this a single event.
     map.event_init(map, :moveend, "function() { " + func_str + " }") 
   end
   
+  # Add map event to find all shown posts when map changes
+   def add_map_event_find_posts(map)
+     func_str = "bounds = map.getBounds();"
+     func_str += "$.get('#{find_posts_path}', { 
+       min_x: bounds.getSouthWest().lat(),
+       min_y: bounds.getSouthWest().lng(),
+       max_x: bounds.getNorthEast().lat(),
+       max_y: bounds.getNorthEast().lng()
+     }, null, 'script');"
+     map.event_init(map, :load, "function() { " + func_str + " }") 
+     map.event_init(map, :moveend, "function() { " + func_str + " }") 
+   end
   
   # Set map center and zoom level to show all user areas. If no user, use geolocation on IP
   def set_center_and_zoom_for_user_areas(map, user_areas)

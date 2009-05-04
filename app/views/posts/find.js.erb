@@ -1,0 +1,7 @@
+map.clearOverlays();
+$('#posts').empty();
+<% for post in @posts do %>
+post<%=post.id%> = new GMarker(new GLatLng(<%= post.pos.y %>, <%= post.pos.x %>), { title: '<%= j post.title %>' });
+map.addOverlay(post<%=post.id%>);
+$('#posts').append('<%= escape_javascript(render(:partial => 'post', :locals => {:post => post}))-%>');
+<% end %>
