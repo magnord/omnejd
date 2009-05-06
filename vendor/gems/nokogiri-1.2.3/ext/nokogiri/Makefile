@@ -4,13 +4,13 @@ SHELL = /bin/sh
 #### Start of system configuration section. ####
 
 srcdir = .
-topdir = /usr/local/lib/ruby/1.8/i686-darwin9.5.1
+topdir = /opt/local/lib/ruby/1.8/i686-darwin9
 hdrdir = $(topdir)
 VPATH = $(srcdir):$(topdir):$(hdrdir)
 exec_prefix = $(prefix)
-prefix = $(DESTDIR)/usr/local
+prefix = $(DESTDIR)/opt/local
 sharedstatedir = $(prefix)/com
-mandir = $(datarootdir)/man
+mandir = $(DESTDIR)/opt/local/share/man
 psdir = $(docdir)
 oldincludedir = $(DESTDIR)/usr/include
 localedir = $(datarootdir)/locale
@@ -28,7 +28,7 @@ sbindir = $(exec_prefix)/sbin
 rubylibdir = $(libdir)/ruby/$(ruby_version)
 docdir = $(datarootdir)/doc/$(PACKAGE)
 dvidir = $(docdir)
-vendordir = $(libdir)/ruby/vendor_ruby
+vendordir = $(DESTDIR)/opt/local/lib/ruby/vendor_ruby
 datarootdir = $(prefix)/share
 pdfdir = $(docdir)
 archdir = $(rubylibdir)/$(arch)
@@ -37,32 +37,33 @@ datadir = $(datarootdir)
 localstatedir = $(prefix)/var
 sitelibdir = $(sitedir)/$(ruby_version)
 
-CC = gcc
+CC = /usr/bin/gcc-4.0
 LIBRUBY = $(LIBRUBY_SO)
 LIBRUBY_A = lib$(RUBY_SO_NAME)-static.a
 LIBRUBYARG_SHARED = -l$(RUBY_SO_NAME)
 LIBRUBYARG_STATIC = -l$(RUBY_SO_NAME)-static
 
 RUBY_EXTCONF_H = 
-CFLAGS   =  -fno-common -D_XOPEN_SOURCE=1  -fno-common -pipe -fno-common $(cflags)  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline 
-INCFLAGS = -I. -I. -I/usr/local/lib/ruby/1.8/i686-darwin9.5.1 -I.
+CFLAGS   =  -fno-common -O2  -fno-common -pipe -fno-common $(cflags)  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline 
+INCFLAGS = -I. -I. -I/opt/local/lib/ruby/1.8/i686-darwin9 -I.
 DEFS     = 
-CPPFLAGS =  -I/opt/local/include/ -I/opt/local/include/libxml2  -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE  
+CPPFLAGS =  -I/opt/local/include/ -I/opt/local/include/libxml2 -I/opt/local/include -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE  -I/opt/local/include
 CXXFLAGS = $(CFLAGS) 
-ldflags  = -L. 
+ldflags  = -L. -L/opt/local/lib
 dldflags = 
 archflag = 
 DLDFLAGS = $(ldflags) $(dldflags) $(archflag)
-LDSHARED = cc -dynamic -bundle -undefined suppress -flat_namespace
+LDSHARED = $(CC) -dynamic -bundle -undefined suppress -flat_namespace
 AR = ar
 EXEEXT = 
 
 RUBY_INSTALL_NAME = ruby
 RUBY_SO_NAME = ruby
-arch = i686-darwin9.5.1
-sitearch = i686-darwin9.5.1
+arch = i686-darwin9
+sitearch = i686-darwin9
+vendorarch = i686-darwin9
 ruby_version = 1.8
-ruby = /usr/local/bin/ruby
+ruby = /opt/local/bin/ruby
 RUBY = $(ruby)
 RM = rm -f
 MAKEDIRS = mkdir -p
@@ -96,8 +97,8 @@ STATIC_LIB =
 
 BINDIR        = $(bindir)
 RUBYCOMMONDIR = $(sitedir)$(target_prefix)
-RUBYLIBDIR = /Users/magnord/Rails/omnejd/vendor/gems/nokogiri-1.2.3/lib$(target_prefix)
-RUBYARCHDIR = /Users/magnord/Rails/omnejd/vendor/gems/nokogiri-1.2.3/lib$(target_prefix)
+RUBYLIBDIR = /Users/magnus/Rails/omnejd/vendor/gems/nokogiri-1.2.3/lib$(target_prefix)
+RUBYARCHDIR = /Users/magnus/Rails/omnejd/vendor/gems/nokogiri-1.2.3/lib$(target_prefix)
 
 TARGET_SO     = $(DLLIB)
 CLEANLIBS     = $(TARGET).bundle $(TARGET).il? $(TARGET).tds $(TARGET).map
