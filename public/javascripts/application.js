@@ -13,8 +13,18 @@ jQuery.ajaxSetup({
 
 // Always send the authenticity_token with ajax (from http://www.viget.com/extend/ie-jquery-rails-and-http-oh-my)
 $(document).ajaxSend(function(event, request, settings) {
-  if (settings.type == 'GET' || settings.type == 'get' || typeof(AUTH_TOKEN) == "undefined") return;
-  // settings.data is a serialized string like "foo=bar&baz=boink" (or null)
-  settings.data = settings.data || "";
-  settings.data += (settings.data ? "&" : "") + "authenticity_token=" + encodeURIComponent(AUTH_TOKEN);
+	if (settings.type == 'GET' || settings.type == 'get' || typeof(AUTH_TOKEN) == "undefined") return;
+	// settings.data is a serialized string like "foo=bar&baz=boink" (or null)
+	settings.data = settings.data || "";
+	settings.data += (settings.data ? "&" : "") + "authenticity_token=" + encodeURIComponent(AUTH_TOKEN);
 });
+
+// Extend array with a 'contains element' method
+Array.prototype.contains = function (element) {
+	for (var i = 0; i < this.length; i++) {
+		if (this[i] == element) {
+			return true;
+		}
+	}
+	return false;
+}

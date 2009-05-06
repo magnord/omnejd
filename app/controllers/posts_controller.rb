@@ -21,7 +21,7 @@ class PostsController < ApplicationController
   # Called (Ajax) by map event
   def find
     @posts = Post.find_all_by_pos([[params[:min_y], params[:min_x]], 
-                               [params[:max_y], params[:max_x]]])
+                               [params[:max_y], params[:max_x]]], :order => "created_at DESC")
     @map = Variable.new("map")
   end
 
@@ -93,12 +93,13 @@ class PostsController < ApplicationController
     @map.control_init(:small_map => true, :map_type => true)
   end
   
+  # Concatenate results from watched areas and sort, newest post first
   def find_areas_posts
     posts = []
     for area in @areas do
       posts.concat area.find_contained_posts
     end
-    return posts.uniq
+    return posts.uniq.sort {|b,a| a.created_at <=> b.created_at}
   end
 
 end
