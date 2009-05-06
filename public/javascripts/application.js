@@ -1,5 +1,10 @@
-// Global variable to hold the polygon currently acted upon
+// Global variables t
+// The polygon currently acted upon
 var currentPoly;
+// The current set of posts
+var currentPosts = {};
+// Map markers
+var markers = {};
 
 // Set format on all ajax requests (not sure this works as it should).
 jQuery.ajaxSetup({  
