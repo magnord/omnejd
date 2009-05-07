@@ -16,12 +16,17 @@ jQuery.each(currentPosts, function() {
 	if (!foundPosts[this.id]) oldPosts.push(this.id); 
 });
 
+//jQuery.each(foundPosts, function(i,p) {GLog.write(p.id);});
+//GLog.write("newPosts=" + newPosts.toSource());
+//GLog.write("oldPosts=" + oldPosts.toSource());
+
 // Remove old posts and markers
 jQuery.each(oldPosts, function() {
-	$('#post' + this).slideUp('slow', function () {$(this).remove()});
+	$('#post' + this).slideUp('normal', function () {$(this).remove()});
 	map.removeOverlay(markers[this]);
 	markers[this] = null;
 });
+
 
 // Render new posts and markers in creation order (i.e. the order of found posts)
 // TODO: The order is sometimes wrong. Fix this bug!
@@ -43,7 +48,7 @@ jQuery.each(foundPosts, function() {
 			$(prevPost).after(this.rendered).hide().slideDown();
 		} else {
 			// First post		
-			$('#posts').append(this.rendered).hide().slideDown();
+			$('#posts').prepend(this.rendered);//.hide().slideDown();
 		}
 	}
 	prevPost = '#post' + this.id;
