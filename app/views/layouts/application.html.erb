@@ -22,7 +22,8 @@
 </head>
 <body>
 <div class='container'>
-	
+
+<div class="header span-24">	
 <div class="span-16">
   <h1><%= @page_title || "Title not set" %></h1>
 </div>
@@ -44,7 +45,7 @@
 <div class="span-8 last">
   <%= pluralize User.logged_in.count, "user" %> currently logged in<br />
 </div>
-
+</div>	
 <% if flash[:error] %><div class="span-24 last"><div class='error'><%= flash[:error] %></div></div><% end -%>
 <% if flash[:notice] %><div class="span-24 last"><div class='notice'><%= flash[:notice] %></div></div><% end -%>
 
