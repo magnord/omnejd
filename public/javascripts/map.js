@@ -89,7 +89,7 @@ function addAreaEvents(poly) {
   GEvent.clearInstanceListeners(poly);
   GEvent.addListener(poly, 'mouseover', function() { 
     this.opacity = 0.5; this.redraw(true);  
-    $('#area_name').text(this.name);
+    $('#area_name').val(this.name);
   });
 
   // Remove highlight at mouseout

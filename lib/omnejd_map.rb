@@ -1,5 +1,4 @@
 module OmnejdMap
-  include ActionView::Helpers::PrototypeHelper
   include ActionView::Helpers::JavaScriptHelper
   
   def add_post_marker(map, post)
