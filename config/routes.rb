@@ -10,10 +10,10 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :posts, :collection => { :find => :get }
   
-  # areas/find is by boudning box, areas/search is by name (for automcompletion)
+  # areas/find is by bounding box, areas/search is by name (for automcompletion)
   # TODO: Change to better names.
   map.resources :areas, :collection => { :find => :get, :search => :get }
-  
+
   map.root :controller => "user_sessions", :action => "new" # optional, this just sets the root route
 
   # Install the default routes as the lowest priority.

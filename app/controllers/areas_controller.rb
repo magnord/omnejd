@@ -12,7 +12,6 @@ class AreasController < ApplicationController
     set_center_and_zoom_for_user_areas(@map, @user_areas)
   end
   
-  # GET /areas/1
    def show
      @area = Area.find(params[:id])
      puts "***************************" + @area.to_json
