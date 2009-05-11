@@ -13,8 +13,10 @@ class AreasController < ApplicationController
   end
   
    def show
-     @area = Area.find(params[:id])
-     puts "***************************" + @area.to_json
+     set_user_and_user_areas
+     @searched_areas = [] << Area.find(params[:area][:id])
+     #set_center_and_zoom_for_user_areas(Variable.new("map"), @searched_areas)
+     #render 'find.js.erb'
    end
   
   

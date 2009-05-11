@@ -6,7 +6,7 @@ module OmnejdMap
     :title => post.title,:info_window => post.body)) # TODO: Add maxWidth for info_window
   end
   
-  # Outline the current watched area (first center and zoom the map to suit the extent of the area)
+  # Outline the current watched areas (first center and zoom the map to suit the extent of all the areas)
   def outline_areas(map, areas, draw = true)
     if areas && !areas.empty? then
       multi_polygon = MultiPolygon.from_polygons(areas.map {|a| a.geom})
@@ -24,6 +24,23 @@ module OmnejdMap
       zoom = 13
     end
     map.center_zoom_init(center,zoom)
+  end
+  
+  # Set map center and zoom level to show all user areas. If no user, use geolocation on IP
+  def set_center_and_zoom_for_user_areas(map, user_areas)
+    if user_areas && !user_areas.empty? then
+      multi_polygon = MultiPolygon.from_polygons(user_areas.map {|a| a.geom})
+      envelope = multi_polygon.envelope
+      center = GLatLng.from_georuby(envelope.center)
+      zoom = map.get_bounds_zoom_level(GLatLngBounds.from_georuby(envelope)).to_javascript
+    else
+      center = GLatLng.new([59.32, 18.07])
+      zoom = 13
+    end
+    map.clear_overlays
+    # We can't use YM4R's map.center_zoom_init(center,zoom) because it will insert setCenter before
+    # our generated GMap2 load event listener setup (and that order doesn't work).
+    map.record_init("map.setCenter(#{center.to_javascript},#{zoom});")
   end
   
   # Add map event to find all shown areas when map changes
@@ -50,23 +67,6 @@ module OmnejdMap
      map.event_init(map, :moveend, "function() { " + func_str + " }") 
      map.record_init("GEvent.trigger(map, 'moveend');")
    end
-  
-  # Set map center and zoom level to show all user areas. If no user, use geolocation on IP
-  def set_center_and_zoom_for_user_areas(map, user_areas)
-    if !user_areas.empty? then
-      multi_polygon = MultiPolygon.from_polygons(user_areas.map {|a| a.geom})
-      envelope = multi_polygon.envelope
-      center = GLatLng.from_georuby(envelope.center)
-      zoom = map.get_bounds_zoom_level(GLatLngBounds.from_georuby(envelope)).to_javascript
-    else
-      center = GLatLng.new([59.32, 18.07])
-      zoom = 13
-    end
-    map.clear_overlays
-    # We can't use YM4R's map.center_zoom_init(center,zoom) because it will insert setCenter before
-    # our generated GMap2 load event listener setup (and that order doesn't work).
-    map.record_init("map.setCenter(#{center.to_javascript},#{zoom});")
-  end
   
   # Create a new draggable marker to define the postion of a new post
   def create_draggable_marker(map)
