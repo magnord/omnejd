@@ -1,5 +1,6 @@
 # Include hook code here
 require 'tidier'
+require 'sanitize'
 require 'auto_sanitize'
 
 ActiveRecord::Base.send :include, AutoSanitize
@@ -10,6 +11,6 @@ ActiveRecord::Base.send :include, AutoSanitize
 #
 unless File.exists? RAILS_ROOT + '/config/initializers/auto_sanitize.rb'
   require 'fileutils'
-  FileUtils::cp File.dirname(__FILE__) + '/../templates/auto_sanitize.rb', 
+  FileUtils::cp File.dirname(__FILE__) + '/templates/auto_sanitize.rb', 
                 RAILS_ROOT + '/config/initializers/auto_sanitize.rb'
 end

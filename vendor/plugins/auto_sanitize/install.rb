@@ -5,6 +5,6 @@
 #
 unless File.exists? RAILS_ROOT + '/config/initializers/auto_sanitize.rb'
   require 'fileutils'
-  FileUtils::cp File.dirname(__FILE__) + '/../templates/auto_sanitize.rb', 
+  FileUtils::cp File.dirname(__FILE__) + '/templates/auto_sanitize.rb', 
                 RAILS_ROOT + '/config/initializers/auto_sanitize.rb'
 end
