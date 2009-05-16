@@ -34,3 +34,17 @@ describe "Area (0 0,0 5,5 5,5 0,0 0)" do
   end
 end
 
+
+# == Schema Information
+# Schema version: 20090501121320
+#
+# Table name: areas
+#
+#  id         :integer         not null, primary key
+#  name       :string(255)     not null
+#  user_id    :integer
+#  created_at :timestamp
+#  updated_at :timestamp
+#  geom       :geometry        not null, polygon, -1
+#
+

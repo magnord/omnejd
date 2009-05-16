@@ -1,0 +1,57 @@
+var foundPosts = {};
+<% for post in @posts do %>
+foundPosts['<%=post.id-%>'] = { id:"<%=post.id-%>", pos:<%=j post.pos.to_json-%>, title:"<%=j post.title-%>" };
+foundPosts['<%=post.id-%>'].rendered = '<%= escape_javascript(render(:partial => 'post', :locals => {:post => post}))-%>';
+<% end %>
+
+var newPosts = [];
+var oldPosts = [];
+jQuery.each(foundPosts, function() {
+	// If the post is not already present on the page, add it to new posts
+	if (!currentPosts[this.id]) newPosts.push(this.id); 
+});
+
+jQuery.each(currentPosts, function() {
+	// If a post is currently present on the page, but is not in the search results, mark it fordeletion
+	if (!foundPosts[this.id]) oldPosts.push(this.id); 
+});
+
+//jQuery.each(foundPosts, function(i,p) {GLog.write(p.id);});
+//GLog.write("newPosts=" + newPosts.toSource());
+//GLog.write("oldPosts=" + oldPosts.toSource());
+
+// Remove old posts and markers
+jQuery.each(oldPosts, function() {
+	$('#post' + this).slideUp('normal', function () {$(this).remove()});
+	map.removeOverlay(markers[this]);
+	markers[this] = null;
+});
+
+
+// Render new posts and markers in creation order (i.e. the order of found posts)
+// TODO: The order is sometimes wrong. Fix this bug!
+var prevPost = null;
+jQuery.each(foundPosts, function() {
+	// Only render the new posts
+	if (newPosts.contains(this.id)) {
+		markers[this.id] = new GMarker(new GLatLng(this.pos.y, this.pos.x));
+		var cssId = '#post' + this.id;
+		GEvent.addListener(markers[this.id], 'mouseover', function(_pos) {
+			$(cssId).css('background','#ffffbb');
+		});
+		GEvent.addListener(markers[this.id], 'mouseout', function(_pos) {
+			$(cssId).css('background','#ffffff');
+		});
+		map.addOverlay(markers[this.id]);
+		if (prevPost) {
+			// Insert after previous post
+			$(prevPost).after(this.rendered).hide().slideDown();
+		} else {
+			// First post		
+			$('#posts').prepend(this.rendered);//.hide().slideDown();
+		}
+	}
+	prevPost = '#post' + this.id;
+});
+
+currentPosts = foundPosts;

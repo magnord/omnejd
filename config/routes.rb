@@ -3,15 +3,17 @@ ActionController::Routing::Routes.draw do |map|
   # See how all your routes lay out with "rake routes"
 
   map.resource :account, :controller => "users"
-  map.resources :users
+  map.resources :users, :has_many => :watched_areas
     
   map.resource :user_session
   map.resource :password_reset
   
-  map.resources :posts
+  map.resources :posts, :collection => { :find => :get }
   
-  map.resources :areas, :collection => { :find => :get }
-  
+  # areas/find is by bounding box, areas/search is by name (for automcompletion)
+  # TODO: Change to better names.
+  map.resources :areas, :collection => { :find => :get, :search => :get }
+
   map.root :controller => "user_sessions", :action => "new" # optional, this just sets the root route
 
   # Install the default routes as the lowest priority.

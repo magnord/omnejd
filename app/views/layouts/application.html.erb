@@ -10,9 +10,10 @@
 <!--[if IE]>
   <%= stylesheet_link_tag 'blueprint/ie', :media => 'screen, projection' %>
 <![endif]-->
+  <%= stylesheet_link_tag 'jquery.autocomplete' %>
   <%= stylesheet_link_tag 'application' %>
   <%= yield :tinymce -%>
-  <%= javascript_include_tag ['jquery-1.3.2.min', 'application'] %> 
+  <%= javascript_include_tag ['jquery-1.3.2.min', 'jquery.autocomplete.min','application'] %> 
   <%= javascript_include_tag 'map', :cache => true %>
   <%= javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? -%>
   
@@ -22,7 +23,8 @@
 </head>
 <body>
 <div class='container'>
-	
+
+<div class="header span-24">	
 <div class="span-16">
   <h1><%= @page_title || "Title not set" %></h1>
 </div>
@@ -33,17 +35,18 @@
 	<% else -%>
 	  <%= link_to current_user.login + "'s account", account_path %> |
 	  <%= link_to "Logout", user_session_path, :method => :delete %>
+	<% end %>
 </div>
 
 <div class='span-16'>
 	<%= link_to "Posts", posts_url %>
+	<%= link_to 'New post', new_post_path %>
   <%= link_to "Areas", areas_url %>
-<% end -%>
 </div>
 <div class="span-8 last">
   <%= pluralize User.logged_in.count, "user" %> currently logged in<br />
 </div>
-
+</div>	
 <% if flash[:error] %><div class="span-24 last"><div class='error'><%= flash[:error] %></div></div><% end -%>
 <% if flash[:notice] %><div class="span-24 last"><div class='notice'><%= flash[:notice] %></div></div><% end -%>
 

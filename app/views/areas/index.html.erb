@@ -1,5 +1,20 @@
+<script>
+  $(document).ready(function() {
+		$("#area_name").autocomplete("<%=search_areas_path-%>");
+		$('#area_name').result(function(event, data, formatted) {
+			if (data)	{ $("#id").val(data[1]); }
+		});
+  });
+</script>
+
 <div class='span-16'>
-	<h2><div id = 'area_name'><%= !@user_areas.empty? ? @user_areas.first.name : "No area chosen" %></div></h2>
+	<% form_tag(area_path(:id => :id), {:method => "get"}) do %>
+	  <%= text_field_tag(:q, 
+											 (!@user_areas.empty? ? @user_areas.first.name : "No area chosen"), 
+											 :id => "area_name") %>
+		<%= text_field_tag :id, '1', :name => 'area[id]' %>
+	 	<%= submit_button("Search for area") %>
+	<% end %> 
 </div>
 <div class='span-8 last' id='area_count'></div>
 <%= render :partial => "map" %>

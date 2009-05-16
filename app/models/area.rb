@@ -1,10 +1,10 @@
 # == Schema Information
-# Schema version: 20090419181824
+# Schema version: 20090501121320
 #
 # Table name: areas
 #
 #  id         :integer         not null, primary key
-#  name       :string(255)
+#  name       :string(255)     not null
 #  user_id    :integer
 #  created_at :timestamp
 #  updated_at :timestamp
@@ -20,8 +20,7 @@ class Area < ActiveRecord::Base
 
   # Define a test area from sample data
   def self.test_area
-    area = Bas99.find_by_basnamn("Kronoberg")
-    Area.find_by_name(:first, "Testarea") || Area.create(:name => area.basnamn, :geom => area.geom)
+    Area.find_by_name("Kronoberg")
   end
   
   # Copy areas from sample DB bas99 to areas

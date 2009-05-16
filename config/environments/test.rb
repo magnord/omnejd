@@ -27,7 +27,7 @@ config.action_mailer.delivery_method = :test
 # like if you have constraints or database-specific column types
 # config.active_record.schema_format = :sql
 
-# This is what we need to round Shoulda under RSpec
+# This is what we need to run Shoulda under RSpec
 config.gem "rspec", :lib => false, :version => ">= 1.2.0" 
 config.gem "rspec-rails", :lib => false, :version => ">= 1.2.0"
 config.gem 'thoughtbot-shoulda', :lib => false, :source => 'http://gems.github.com'
@@ -35,4 +35,6 @@ config.gem 'thoughtbot-shoulda', :lib => false, :source => 'http://gems.github.c
 # Extra stuff
 config.gem "notahat-machinist", :lib => 'machinist', :source => "http://gems.github.com"
 config.gem 'faker'
+config.gem 'cucumber'
+config.gem 'webrat'
 
