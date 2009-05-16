@@ -13,6 +13,8 @@
 
 class Area < ActiveRecord::Base
   
+  auto_sanitizes :all
+  
   has_many :watched_areas, :dependent => :destroy
   
   acts_as_geom :geom

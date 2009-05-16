@@ -1,0 +1,127 @@
+AutoSanitize
+============
+
+This is a plugin which can be used to process string and text fields automatically and
+transparently, removing or cleaning up HTML. These are a few things this plugin can do:
+
+- sanitize text and string fields according to the convention of their name and type
+- strip away leading and trailing whitespace
+- convert blank results to nil
+- correct incorrect HTML, closing unclosed tags, etc
+- strip away unwanted HTML tags and attributes depending on the tag
+- add mandatory attributes to specific tags
+- restrict protocols used in URIs
+- remove javascript injection attempts
+- sanitize attributes using dedicated cleanup processor specifications
+- sanitize all attributes or specific ones
+- sanitize only attributes whose value has changed
+
+
+Example
+=======
+
+To activate the sanitizer, simply install the plugin. During installation and/or startup,
+a configuration file called "auto_sanitize.rb" will be copied to the config/initializers
+directory. You can tailor it according to your liking.
+
+To activate the sanitizer for a class, simply include one or more calls to "auto_sanitizes",
+like the following:
+
+  class Foo < ActiveRecord::Base
+    auto_sanitizes :all
+  end
+
+This will enable sanitization on its most general level. All text or string attributes will
+be processed: those whose names occur in AutoSanitize::CLEANERS will be cleaned up, those
+which don't will be stripped entirely of any HTML. All sanitized attributes will also be
+stripped of leading and trailing whitespace. This will be done just before validation.
+
+If you want to specify what attributes are to be sanitized, simply specify which ones:
+
+  class Foo < ActiveRecord::Base
+    auto_sanitizes :title, :body, :author_name
+  end
+
+The attributes will be processed in the same way. The following is completely equivalent:
+
+  class Foo < ActiveRecord::Base
+    auto_sanitizes :title
+    auto_sanitizes :body, :author_name
+  end
+
+You can call auto_sanitize any number of times, with any number of arguments.
+
+You can specify options for each call to auto_sanitize to further control the way the
+attributes are processed:
+
+  class Foo < ActiveRecord::Base
+    auto_sanitizes :title, :author_name, :with => :strip
+    auto_sanitizes :body, :with => :clean
+  end
+  
+The above is exactly equivalent to the version above it, since :strip is the default for
+any attribute not named in AutoSanitize::CLEANERS in the initializer file. You can 
+override this, of course:
+
+  class Foo < ActiveRecord::Base
+    auto_sanitizes :title, :author_name, :with => :clean
+    auto_sanitizes :body, :with => :strip
+  end
+
+For cleaners, the default strategy is given in the initialization file and is called 
+AutoSanitize::SANITIZE_BODY. It is a simple hash, describing what elements, attributes,
+protocols and so forth may appear in the sanitized result. For more details, check the
+documentation for the "sanitize" gem, on which this plugin depends.
+
+You can, however, specify any strategy you want:
+
+  class Foo < ActiveRecord::Base
+    auto_sanitizes :body, :with => { :elements => ['p', 'b', 'strong', 'i'] }
+  end
+  
+The above will allow only <p>, <b>, <strong>, and <i> HTML elements, without any attributes.
+
+The attributes will, by default, be stripped of leading and trailing whitespace. To
+inhibit the automatic stripping, specify:
+
+  class Foo < ActiveRecord::Base
+    auto_sanitizes :title, :no_trim => true
+  end
+
+You can also turn on automatic substitution of blank strings with nil:
+
+  class Foo < ActiveRecord::Base
+    auto_sanitizes :body, :nullify => true
+  end
+ 
+The special keyword ":all", which means "all string or text attributes" can also 
+take options:
+
+  class Foo < ActiveRecord::Base
+    auto_sanitizes :all, :with => :strip, :nullify => true
+  end
+ 
+And since it is always the last mention of an attribute which has precedence, this
+allows you to do things like:
+
+  class Foo < ActiveRecord::Base
+    auto_sanitizes :all, :with => :strip, :nullify => true
+    auto_sanitizes :body, :with => :clean
+    auto_sanitizes :bar_type, :leave => true
+  end
+  
+Note that :body will be sanitized using the standard cleaner, whereas all other
+attributes will be stripped of all HTML and set to nil if blank. However, :body
+will *not* be nullified, since the sanitization options of :body are entirely
+replaced with what has been specified in the last call, where :nullify doesn't
+appear and therefore is false.
+
+Also, in the example above, the attribute :bar_type will be entirely unprocessed
+since it has the special option :leave set to true.
+
+To do: add logic to redefine the mutators to do the sanitization at assignment
+rather then during validation, if so desired. The option controlling this is
+:at_assign, which must be true for this to happen.
+
+
+Copyright (c) 2009 Peter Bengtson, released under the MIT license

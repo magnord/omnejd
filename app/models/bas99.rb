@@ -11,5 +11,9 @@
 #
 
 class Bas99 < ActiveRecord::Base
+  
   set_table_name "bas99"
+  
+  auto_sanitizes :all
+  
 end

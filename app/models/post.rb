@@ -15,6 +15,9 @@
 
 class Post < ActiveRecord::Base
   
+  auto_sanitizes :all
+  auto_sanitizes :cached_tag_list, :leave => true
+
   belongs_to :user
   
   acts_as_geom :pos
