@@ -39,6 +39,8 @@ module AutoSanitize
           res = clean_html(read_attribute(attrib))
         when :strip
           res = strip_html(read_attribute(attrib))
+        when :escape
+          res = read_attribute(attrib).gsub('<', '&lt;').gsub('>', '&gt;')
         else
           raise "Illegal :with option '#{opts[:with]}'" unless opts[:with].is_a?(Hash)
           res = clean_html(read_attribute(attrib), opts[:with])

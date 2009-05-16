@@ -1,6 +1,7 @@
 # Include hook code here
 require 'tidier'
 require 'sanitize'
+require 'sanitize_patches'
 require 'auto_sanitize'
 
 ActiveRecord::Base.send :include, AutoSanitize

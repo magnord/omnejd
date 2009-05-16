@@ -81,6 +81,16 @@ You can, however, specify any strategy you want:
   
 The above will allow only <p>, <b>, <strong>, and <i> HTML elements, without any attributes.
 
+There is another :with option:
+
+  class Foo < ActiveRecord::Base
+    auto_sanitizes :body, :with => :escape
+  end
+
+This will simply substitute all '<' and '>' characters with '&lt;' and '&gt;', respectively,
+effectively quoting all HTML, thereby rendering it inert.
+  
+
 The attributes will, by default, be stripped of leading and trailing whitespace. To
 inhibit the automatic stripping, specify:
 
