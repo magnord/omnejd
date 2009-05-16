@@ -40,4 +40,3 @@ module ApplicationHelper
   end
 
 end
-
