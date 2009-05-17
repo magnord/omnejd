@@ -1,4 +1,19 @@
+<% 
+init_map
+# Add event to find and redraw areas after a map change.
+# This will be triggered immediately after set_center_and_zoom.
+add_map_event_find_areas(@map)
+
+# Draw a user's watched areas or a searched after area
+if @searched_areas.blank? then 
+	set_center_and_zoom_for_areas(@map, @user_areas) 
+else
+	set_center_and_zoom_for_areas(@map, @searched_areas) 
+end
+%>
+
 <script>
+  // Set up autocompletion for area search field
   $(document).ready(function() {
 		$("#area_name").autocomplete("<%=search_areas_path-%>");
 		$('#area_name').result(function(event, data, formatted) {
@@ -8,6 +23,7 @@
 </script>
 
 <div class='span-16'>
+<!-- This form is unbelievable ugly. Will fix when I find the right Rails magic to use here. -->
 	<% form_tag(area_path(:id => :id), {:method => "get"}) do %>
 	  <%= text_field_tag(:q, 
 											 (!@user_areas.empty? ? @user_areas.first.name : "No area chosen"), 
@@ -16,5 +32,6 @@
 	 	<%= submit_button("Search for area") %>
 	<% end %> 
 </div>
+
 <div class='span-8 last' id='area_count'></div>
 <%= render :partial => "map" %>

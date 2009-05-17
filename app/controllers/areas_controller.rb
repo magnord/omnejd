@@ -1,22 +1,18 @@
 class AreasController < ApplicationController
   
-  #before_filter :set_user_and_user_areas, :init_map
-  
   # GET /areas
+  # Show areas on area map
   def index
     set_user_and_user_areas
-    init_map
     @page_title = if @user then "#{@user.login}'s areas" else "Areas" end
-    
-    add_map_event_find_areas(@map) # Will ajax-call areas/find
-    set_center_and_zoom_for_user_areas(@map, @user_areas)
   end
   
+   # GET /area/:id  
+   # Get area data and show it on area map
    def show
      set_user_and_user_areas
-     @searched_areas = [] << Area.find(params[:area][:id])
-     #set_center_and_zoom_for_user_areas(Variable.new("map"), @searched_areas)
-     #render 'find.js.erb'
+     @searched_areas << Area.find(params[:area][:id])
+     render :index
    end
   
   
@@ -44,10 +40,6 @@ class AreasController < ApplicationController
      # This is probably very ineffiecient
      @watched_areas = if @user then @user.watched_areas else [] end
      @user_areas = if @user then @user.areas else [] end
-   end
-
-   def init_map
-     @map = GMap.new("map_div")
-     @map.control_init(:large_map => true, :map_type => true)
+     @searched_areas = []
    end
 end

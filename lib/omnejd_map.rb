@@ -1,35 +1,31 @@
 module OmnejdMap
   include ActionView::Helpers::JavaScriptHelper
   
+  def init_map
+    @map = GMap.new("map_div")
+    @map.control_init(:large_map => true, :map_type => true)
+  end
+  
   def add_post_marker(map, post)
     map.overlay_init(GMarker.new([post.pos.y, post.pos.x],
     :title => post.title,:info_window => post.body)) # TODO: Add maxWidth for info_window
   end
   
-  # Outline the current watched areas (first center and zoom the map to suit the extent of all the areas)
+  # Outline the a set of areas (first center and zoom the map to suit the extent of all the areas)
   def outline_areas(map, areas, draw = true)
-    if areas && !areas.empty? then
-      multi_polygon = MultiPolygon.from_polygons(areas.map {|a| a.geom})
-      envelope = multi_polygon.envelope
-      center = GLatLng.from_georuby(envelope.center)
-      zoom = map.get_bounds_zoom_level(GLatLngBounds.from_georuby(envelope)) 
-      map.clear_overlays  
+    if !areas.blank? then
+      set_center_and_zoom_for_areas(map, areas)
       for area in areas do
         map.record_init(GPolygon.from_georuby(area.geom,"#333333", 1, 0.5, "#ff3333", 0.1).declare('areaOutline')) if draw
         map.record_init("map.addOverlay(areaOutline);") if draw
       end  
-    else
-      # No area defined, center on arbitrary location (should use geolocation on IP).
-      center = [59.32, 18.07]
-      zoom = 13
     end
-    map.center_zoom_init(center,zoom)
   end
   
-  # Set map center and zoom level to show all user areas. If no user, use geolocation on IP
-  def set_center_and_zoom_for_user_areas(map, user_areas)
-    if user_areas && !user_areas.empty? then
-      multi_polygon = MultiPolygon.from_polygons(user_areas.map {|a| a.geom})
+  # Set map center and zoom level to show all areas. If no areas, use geolocation on IP
+  def set_center_and_zoom_for_areas(map, areas)
+    if !areas.blank? then
+      multi_polygon = MultiPolygon.from_polygons(areas.map {|a| a.geom})
       envelope = multi_polygon.envelope
       center = GLatLng.from_georuby(envelope.center)
       zoom = map.get_bounds_zoom_level(GLatLngBounds.from_georuby(envelope)).to_javascript

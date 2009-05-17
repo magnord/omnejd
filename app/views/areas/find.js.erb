@@ -1,7 +1,11 @@
+// Draw all areas found within new bounding box
+
 map.clearOverlays();
 $('#area_count').text('<%=@areas.length-%> areas on map');
 
+// We need a user id to enable click events to toggle a user's watched areas 
 <%   userId = @user ? @user.id : 0 %>
+
 // Draw all watched areas
 <% for watched_area in @watched_areas do
   area = watched_area.area

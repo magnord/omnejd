@@ -17,5 +17,5 @@ Scenario: Login a unregistered user
   And I fill in "Login" with "ickepelle"
   And I fill in "Password" with "password"
 	And I press "Login"
-	Then I should see "Login does not exist"
+	Then I should see "Login is not valid"
 
