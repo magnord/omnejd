@@ -1,13 +1,16 @@
 class PostsController < ApplicationController
 
-  before_filter :set_user_and_user_areas, :init_map
+  before_filter :set_user_and_user_areas
+  
   # GET /posts
+  # If no watched areas select posts within current map, otherwise within watched areas.
   def index
     @page_title = "Posts"
-    if @areas.empty? 
+    init_map
+    if @areas.blank? 
       # Find posts in current map 
       add_map_event_find_posts(@map) # Will ajax-call posts/find
-      outline_areas(@map, @areas)
+      set_center_and_zoom_for_areas(@map, @areas)
     else
       # Find posts in watched areas
       outline_areas(@map, @areas)
@@ -18,30 +21,36 @@ class PostsController < ApplicationController
     end
   end
   
-  # Called (Ajax) by map event
+  # Called (Ajax) on map change event
+  # Find all posts within current bounding box
   def find
     @posts = Post.find_all_by_pos([[params[:min_y], params[:min_x]], 
                                [params[:max_y], params[:max_x]]], :order => "created_at DESC")
-    @map = Variable.new("map")
+    @map = Variable.new("map") # YM4R JS-to-Ruby variable mapping
   end
 
   # GET /posts/1
   def show
-    outline_areas(@map, @areas)
+    init_map
     @post = Post.find(params[:id])
-    add_post_marker(@map, @post)
+    set_center_and_zoom_for_post(@map, @post) if @post
+    add_post_marker(@map, @post) if @post
   end
 
   # GET /posts/new
   def new
-    outline_areas(@map, @areas, false)
+    # TODO Check that a user session is present
+    init_map
+    set_center_and_zoom_for_areas(@map, @areas)
     create_draggable_marker(@map)
     @post = Post.new
   end
 
   # GET /posts/1/edit
   def edit
-    outline_areas(@map, @areas, false)
+    # TODO Check that a user session is present
+    init_map
+    set_center_and_zoom_for_areas(@map, @areas)
     @post = Post.find(params[:id])
     create_draggable_marker_for_edit(@map, @post)
   end

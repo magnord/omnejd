@@ -39,6 +39,16 @@ module OmnejdMap
     map.record_init("map.setCenter(#{center.to_javascript},#{zoom});")
   end
   
+  def set_center_and_zoom_for_post(map, post)
+    center = GLatLng.from_georuby(post.pos)
+    zoom = 15      
+    map.clear_overlays
+    # We can't use YM4R's map.center_zoom_init(center,zoom) because it will insert setCenter before
+    # our generated GMap2 load event listener setup (and that order doesn't work).
+    map.record_init("map.setCenter(#{center.to_javascript},#{zoom});")
+  end
+  
+  
   # Add map event to find all shown areas when map changes
   def add_map_event_find_areas(map)
     func_str = "bounds = map.getBounds();"
