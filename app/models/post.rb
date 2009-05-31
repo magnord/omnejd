@@ -30,6 +30,10 @@ class Post < ActiveRecord::Base
     post.title = Sanitize.clean(post.title)
     post.body = Sanitize.clean(post.body, Sanitize::Config::RELAXED)
   end
+  
+  def byline
+    if self.user then " by #{self.user.login}" else "" end
+  end
     
 end
 
