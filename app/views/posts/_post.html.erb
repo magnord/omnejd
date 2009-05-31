@@ -2,12 +2,12 @@
   <%= image_tag(post.user.avatar.url(:thumb), :align => :right) if post.user && post.user.avatar %>
   <h3><%=link_to post.title, post %></h3>
   <%= post.body %>
-  <div class="small"><%=post.created_at-%> Tags: <%= post.tag_list %> <%= link_to 'Edit', edit_post_path(post) %>
+  <div class="small"><%=distance_of_time_in_words(post.created_at, Time.now)-%> ago. Tags: <%= post.tag_list %> <%= link_to 'Edit', edit_post_path(post) %>
     <%= link_to 'Destroy', post, :confirm => 'Are you sure?', :method => :delete %>
     <hr />
   </div>
 </div>
 <div class="post-info-window" id="post-info<%=post.id-%>" style="display:none;">
   <h4><%= post.title %></h4>
-  <div class="small"><%=post.created_at-%></div>
+  <div class="small"><%=distance_of_time_in_words(post.created_at, Time.now)-%> ago.</div>
 </div>
