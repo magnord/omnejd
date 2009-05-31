@@ -23,8 +23,9 @@ function addMarker(id, x, y) {
 		$("#post-info" + id).hide();
 		$(cssId).toggleClass('highlight');
 	});
+	// Show post when marker is clicked
 	GEvent.addListener(markers[id], 'click', function(_pos) {
-		$.get('/posts/'+ id);
+		window.location.replace('/posts/'+ id);
 	});
 	map.addOverlay(markers[id]);
 }
