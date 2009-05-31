@@ -29,20 +29,11 @@ jQuery.each(oldPosts, function() {
 
 
 // Render new posts and markers in creation order (i.e. the order of found posts)
-// TODO: The order is sometimes wrong. Fix this bug!
 var prevPost = null;
 jQuery.each(foundPosts, function() {
 	// Only render the new posts
 	if (newPosts.contains(this.id)) {
-		markers[this.id] = new GMarker(new GLatLng(this.pos.y, this.pos.x));
-		var cssId = '#post' + this.id;
-		GEvent.addListener(markers[this.id], 'mouseover', function(_pos) {
-			$(cssId).css('background','#ffffbb');
-		});
-		GEvent.addListener(markers[this.id], 'mouseout', function(_pos) {
-			$(cssId).css('background','#ffffff');
-		});
-		map.addOverlay(markers[this.id]);
+		addMarker(this.id, this.pos.x, this.pos.y);
 		if (prevPost) {
 			// Insert after previous post
 			$(prevPost).after(this.rendered).hide().slideDown();

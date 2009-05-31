@@ -105,3 +105,15 @@ function addAreaEvents(poly) {
   });
 }
 
+// Add a map marker with mouse events
+function addMarker(id, x, y) {
+	markers[id] = new GMarker(new GLatLng(y, x));
+	var cssId = '#post' + id;
+	GEvent.addListener(markers[id], 'mouseover', function(_pos) {
+		$(cssId).css('background','#ffffbb');
+	});
+	GEvent.addListener(markers[id], 'mouseout', function(_pos) {
+		$(cssId).css('background','#ffffff');
+	});
+	map.addOverlay(markers[id]);
+}

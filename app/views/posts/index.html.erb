@@ -1,3 +1,18 @@
+<% init_map
+# If no watched areas select posts within current map, otherwise within watched areas.
+if @areas.blank? 
+  # Find posts in current map 
+  add_map_event_find_posts(@map) # Will ajax-call posts/find
+  set_center_and_zoom_for_areas(@map, @areas)
+else
+  # Find posts in watched areas
+  outline_areas(@map, @areas)
+  @posts.each do |post|
+     add_post_marker(@map, post)
+  end
+end
+%>
+
 <div id="posts" class='span-16'>
 	<%= render :partial => @posts %>
 	&nbsp;

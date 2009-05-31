@@ -1,3 +1,9 @@
+<%
+init_map
+set_center_and_zoom_for_post(@map, @post) if @post
+add_post_marker(@map, @post) if @post
+%>
+
 <div class="span-16">
 <%= render @post %>
 

@@ -1,3 +1,9 @@
+<% 
+init_map
+set_center_and_zoom_for_areas(@map, @areas)
+create_draggable_marker(@map)
+%>
+
 <div class="span-16">
   <%= render :partial => "form", :locals => { :button_label => "Create post", :post => @post } %>
 </div>

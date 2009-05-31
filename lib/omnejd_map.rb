@@ -3,12 +3,11 @@ module OmnejdMap
   
   def init_map
     @map = GMap.new("map_div")
-    @map.control_init(:large_map => true, :map_type => true)
+    @map.control_init(:small_map => true, :map_type => true)
   end
   
   def add_post_marker(map, post)
-    map.overlay_init(GMarker.new([post.pos.y, post.pos.x],
-    :title => post.title,:info_window => post.body)) # TODO: Add maxWidth for info_window
+    map.record_init("addMarker(#{post.id}, #{post.pos.x}, #{post.pos.y});")
   end
   
   # Outline the a set of areas (first center and zoom the map to suit the extent of all the areas)
