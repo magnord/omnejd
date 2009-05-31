@@ -75,12 +75,12 @@ module OmnejdMap
   
   # Create a new draggable marker to define the postion of a new post
   def create_draggable_marker(map)
-    map.record_init('create_draggable_marker();')
+    map.record_init('createDraggableMarker();')
   end
 
   # Create a draggable marker to edit the postion of a post
   def create_draggable_marker_for_edit(map, post)
-    map.record_init("create_draggable_marker_for_edit(#{post.pos.y},#{post.pos.x});")
+    map.record_init("createDraggableMarkerForEdit(#{post.pos.y},#{post.pos.x});")
   end
   
   # Generate string of GLatGng constructors for use in GPolygon

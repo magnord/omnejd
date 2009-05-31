@@ -1,1 +1,21 @@
 .header {background: #dfb;}
+
+.post-info-window { 
+	position:absolute; 
+	left: 0px;
+	padding: 5px; 
+	background: #fff; 
+	color: #000; 
+	width: 100%;
+	/* for IE */
+	filter:alpha(opacity=90);
+	/* CSS3 standard */
+	opacity:0.9;
+}
+
+.info-bottom { 	bottom: 0px; }
+.info-top {	top: 0px; }
+
+.highlight { background: #ffffbb; }
+
+

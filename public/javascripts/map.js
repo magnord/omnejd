@@ -1,4 +1,36 @@
-function create_draggable_marker()
+//
+// Marker code
+//
+
+// Add a map marker with mouse and click events
+function addMarker(id, x, y) {
+	markers[id] = new GMarker(new GLatLng(y, x));
+	var cssId = '#post' + id;
+	// Show info window in map pane and highlight post on mouseover
+	GEvent.addListener(markers[id], 'mouseover', function(pos) {
+		$(cssId).toggleClass('highlight');
+		if (pos.lat() > map.getCenter().lat()) {
+			// marker is in the top half of map, show info in bottom half
+			$("#post-info" + id).addClass("info-bottom").removeClass("info-top");
+		} else {
+			// marker is in the bottom half of map, show info in top half
+			$("#post-info" + id).addClass("info-top").removeClass("info-bottom");
+		}
+		$("#post-info" + id).appendTo("#map_div").fadeIn(); //TODO: Will this append the same div repeatedly?
+	});
+	// Remove info window and post highlight
+	GEvent.addListener(markers[id], 'mouseout', function(_pos) {
+		$("#post-info" + id).hide();
+		$(cssId).toggleClass('highlight');
+	});
+	GEvent.addListener(markers[id], 'click', function(_pos) {
+		$.get('/posts/'+ id);
+	});
+	map.addOverlay(markers[id]);
+}
+
+// Draggable marker for positioning new posts
+function createDraggableMarker()
 {
 	// intialize the values in form fields to 0
 	updateLatlngText(0, 0);
@@ -20,7 +52,8 @@ function create_draggable_marker()
 	});
 }
 
-function create_draggable_marker_for_edit(lat, lng) {
+// Draggable marker for editing position of posts
+function createDraggableMarkerForEdit(lat, lng) {
 	// initalize form fields
 	updateLatlngText(lat, lng);
 	// initalize marker
@@ -32,10 +65,15 @@ function create_draggable_marker_for_edit(lat, lng) {
 	});
 }
 
+// Update hidden form fields
 function updateLatlngText(lat, lng){
 	$('#lat').val(lat);
 	$('#lng').val(lng);
 }
+
+//
+// Area code
+//
 
 // Draw a watched area in the area selection map
 function drawWatchedArea(points, userId, areaId, watchedId, name) {
@@ -103,17 +141,4 @@ function addAreaEvents(poly) {
     $.post('/users/'+this.userId+'/watched_areas.js', 
       { area_id: this.areaId }, null, 'script');
   });
-}
-
-// Add a map marker with mouse events
-function addMarker(id, x, y) {
-	markers[id] = new GMarker(new GLatLng(y, x));
-	var cssId = '#post' + id;
-	GEvent.addListener(markers[id], 'mouseover', function(_pos) {
-		$(cssId).css('background','#ffffbb');
-	});
-	GEvent.addListener(markers[id], 'mouseout', function(_pos) {
-		$(cssId).css('background','#ffffff');
-	});
-	map.addOverlay(markers[id]);
 }
