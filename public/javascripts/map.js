@@ -20,7 +20,7 @@ function addMarker(id, x, y) {
 	});
 	// Remove info window and post highlight
 	GEvent.addListener(markers[id], 'mouseout', function(_pos) {
-		$("#post-info" + id).hide();
+		$("#post-info" + id).fadeOut();
 		$(cssId).toggleClass('highlight');
 	});
 	// Show post when marker is clicked

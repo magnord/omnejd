@@ -1,4 +1,6 @@
-.header {background: #dfb;}
+.header { background: #dfb; }
+
+#map_div { border-width: 1px; border-color: #777; border-style: solid; } 
 
 .post-info-window { 
 	position:absolute; 
@@ -6,15 +8,17 @@
 	padding: 5px; 
 	background: #fff; 
 	color: #000; 
-	width: 100%;
+	width: 300px;
 	/* for IE */
 	filter:alpha(opacity=90);
 	/* CSS3 standard */
 	opacity:0.9;
+	border-top-color: #777; 
+	border-style: solid; 
 }
 
-.info-bottom { 	bottom: 0px; }
-.info-top {	top: 0px; }
+.info-bottom { 	bottom: 0px; border-top-width: 1px; }
+.info-top {	top: 0px; border-bottom-width: 1px; }
 
 .highlight { background: #ffffbb; }
 
