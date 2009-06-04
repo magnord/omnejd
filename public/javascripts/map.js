@@ -16,11 +16,11 @@ function addMarker(id, x, y) {
 			// marker is in the bottom half of map, show info in top half
 			$("#post-info" + id).addClass("info-top").removeClass("info-bottom");
 		}
-		$("#post-info" + id).appendTo("#map_div").fadeIn('fast'); //TODO: Will this append the same div repeatedly?
+		$("#post-info" + id).appendTo("#map_div").show(); //TODO: Will this append the same div repeatedly?
 	});
 	// Remove info window and post highlight
 	GEvent.addListener(markers[id], 'mouseout', function(_pos) {
-		$("#post-info" + id).fadeOut('fast');
+		$("#post-info" + id).hide();
 		$(cssId).toggleClass('highlight');
 	});
 	// Show post when marker is clicked
