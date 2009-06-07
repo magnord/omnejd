@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090501121320) do
+ActiveRecord::Schema.define(:version => 20090607161933) do
 
   create_table "areas", :force => true do |t|
     t.column "name", :string, :null => false
@@ -36,9 +36,20 @@ ActiveRecord::Schema.define(:version => 20090501121320) do
     t.column "user_id", :integer
     t.column "created_at", :timestamp
     t.column "updated_at", :timestamp
-    t.column "pos", :point, :null => false
     t.column "cached_tag_list", :string
+    t.column "pos", :point, :null => false
   end
+
+  create_table "samswgs84", :force => true do |t|
+    t.column "samscode", :string
+    t.column "samsnamn", :string
+    t.column "kommun", :string
+    t.column "created_at", :timestamp
+    t.column "updated_at", :timestamp
+    t.column "geom", :multi_polygon, :null => false
+  end
+
+  add_index "samswgs84", ["geom"], :name => "index_samswgs84_on_geom", :spatial=> true 
 
   create_table "sweden5", :force => true do |t|
     t.column "gid", :string, :null => false
