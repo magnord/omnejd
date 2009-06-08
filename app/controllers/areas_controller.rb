@@ -41,5 +41,6 @@ class AreasController < ApplicationController
      @watched_areas = if @user then @user.watched_areas else [] end
      @user_areas = if @user then @user.areas else [] end
      @searched_areas = []
+     @request = request
    end
 end

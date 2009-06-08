@@ -73,6 +73,7 @@ class PostsController < ApplicationController
      @user = current_user
      # This is probably very ineffiecient
      @areas = if @user then @user.areas else [] end
+     @request = request
    end
   
   # Concatenate results from watched areas and sort, newest post first

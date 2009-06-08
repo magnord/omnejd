@@ -11,9 +11,9 @@ module OmnejdMap
   end
   
   # Outline the a set of areas (first center and zoom the map to suit the extent of all the areas)
-  def outline_areas(map, areas, draw = true)
+  def outline_areas(map, areas, request, draw = true)
     if !areas.blank? then
-      set_center_and_zoom_for_areas(map, areas)
+      set_center_and_zoom_for_areas(map, areas, request)
       for area in areas do
         map.record_init(GPolygon.from_georuby(area.geom,"#333333", 1, 0.5, "#ff3333", 0.1).declare('areaOutline')) if draw
         map.record_init("map.addOverlay(areaOutline);") if draw
@@ -22,7 +22,7 @@ module OmnejdMap
   end
   
   # Set map center and zoom level to show all areas. If no areas, use geolocation on IP
-  def set_center_and_zoom_for_areas(map, areas)
+  def set_center_and_zoom_for_areas(map, areas, request)
     if !areas.blank? then
       multi_polygon = MultiPolygon.from_polygons(areas.map {|a| a.geom})
       envelope = multi_polygon.envelope

@@ -3,10 +3,10 @@
 if @areas.blank? 
   # Find posts in current map 
   add_map_event_find_posts(@map) # Will ajax-call posts/find
-  set_center_and_zoom_for_areas(@map, @areas)
+  set_center_and_zoom_for_areas(@map, @areas, @request)
 else
   # Find posts in watched areas
-  outline_areas(@map, @areas)
+  outline_areas(@map, @areas, @request)
   @posts.each do |post|
      add_post_marker(@map, post)
   end

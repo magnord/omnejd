@@ -6,9 +6,9 @@ add_map_event_find_areas(@map)
 
 # Draw a user's watched areas or a searched after area
 if @searched_areas.blank? then 
-	set_center_and_zoom_for_areas(@map, @user_areas) 
+	set_center_and_zoom_for_areas(@map, @user_areas, @request) 
 else
-	set_center_and_zoom_for_areas(@map, @searched_areas) 
+	set_center_and_zoom_for_areas(@map, @searched_areas, @request) 
 end
 %>
 
