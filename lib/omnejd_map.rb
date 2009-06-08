@@ -29,8 +29,15 @@ module OmnejdMap
       center = GLatLng.from_georuby(envelope.center)
       zoom = map.get_bounds_zoom_level(GLatLngBounds.from_georuby(envelope)).to_javascript
     else
-      center = GLatLng.new([59.32, 18.07])
-      zoom = 13
+      # No watched areas, use IP geolocation
+      user_location = Geokit::Geocoders::IpGeocoder::geocode(request.remote_ip)
+      if (user_location.lat && user_location.lng) then
+        center = GLatLng.new([user_location.lat, user_location.lng])
+      else
+        # We have no idea, use Stockholm
+        center = GLatLng.new([59.32, 18.07])
+      end
+      zoom = 12
     end
     map.clear_overlays
     # We can't use YM4R's map.center_zoom_init(center,zoom) because it will insert setCenter before

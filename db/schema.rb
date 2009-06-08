@@ -36,8 +36,8 @@ ActiveRecord::Schema.define(:version => 20090607161933) do
     t.column "user_id", :integer
     t.column "created_at", :timestamp
     t.column "updated_at", :timestamp
-    t.column "cached_tag_list", :string
     t.column "pos", :point, :null => false
+    t.column "cached_tag_list", :string
   end
 
   create_table "samswgs84", :force => true do |t|
