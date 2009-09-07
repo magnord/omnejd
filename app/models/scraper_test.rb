@@ -1,4 +1,4 @@
-class Scraper
+class ScraperTest
   
   require 'open-uri'
   require 'nokogiri'
